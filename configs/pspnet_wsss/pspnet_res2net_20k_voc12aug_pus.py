@@ -14,3 +14,4 @@ model = dict(
         loss_decode=dict(pus_type='clamp', pus_beta=0.5, pus_k=0.5))
 )
 data = dict(train=dict(ann_dir='ppmg'))
+pretrained=None
