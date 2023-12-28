@@ -7,7 +7,6 @@ from mmseg.registry import MODELS
 from ..utils import resize
 from .decode_head import BaseDecodeHead
 
-
 class PPM(nn.ModuleList):
     """Pooling Pyramid Module used in PSPNet.
 
