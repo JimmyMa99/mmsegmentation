@@ -1,0 +1,504 @@
+12/28 23:51:26 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.10.13 (main, Sep 11 2023, 13:44:35) [GCC 11.2.0]
+    CUDA available: True
+    numpy_random_seed: 956153619
+    GPU 0: NVIDIA GeForce RTX 3090
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 11.8, V11.8.89
+    GCC: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+    PyTorch: 1.13.1+cu117
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201402
+  - Intel(R) oneAPI Math Kernel Library Version 2023.1-Product Build 20230303 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.6.0 (Git Hash 52b5f107dd9cf10910aaa19cb47f3abf9b349815)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.7
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86
+  - CuDNN 8.5
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.7, CUDNN_VERSION=8.5.0, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -fabi-version=11 -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wunused-local-typedefs -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.13.1, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+    TorchVision: 0.14.1+cu117
+    OpenCV: 4.8.1
+    MMEngine: 0.10.1
+
+Runtime environment:
+    cudnn_benchmark: True
+    dist_cfg: {'backend': 'nccl'}
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    seed: 956153619
+    Distributed launcher: none
+    Distributed training: False
+    GPU number: 1
+------------------------------------------------------------
+
+12/28 23:51:27 - mmengine - INFO - Config:
+crop_size = (
+    512,
+    512,
+)
+data = dict(
+    samples_per_gpu=2,
+    train=dict(
+        ann_dir='ppmg',
+        data_root='data/voc12/VOC2012/',
+        img_dir='JPEGImages',
+        split='ImageSets/Segmentation/trainaug.txt'),
+    val=dict(
+        ann_dir='SegmentationClass',
+        data_root='data/voc12/VOC2012/',
+        img_dir='JPEGImages',
+        split='ImageSets/Segmentation/train.txt'))
+data_preprocessor = dict(
+    bgr_to_rgb=True,
+    mean=[
+        123.675,
+        116.28,
+        103.53,
+    ],
+    pad_val=0,
+    seg_pad_val=255,
+    size=(
+        448,
+        448,
+    ),
+    std=[
+        58.395,
+        57.12,
+        57.375,
+    ],
+    type='SegDataPreProcessor')
+data_root = 'data/voc12/VOC2012/'
+dataset_type = 'PascalVOCDataset'
+default_hooks = dict(
+    checkpoint=dict(by_epoch=False, interval=2000, type='CheckpointHook'),
+    logger=dict(interval=50, log_metric_by_epoch=False, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='SegVisualizationHook'))
+default_scope = 'mmseg'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+img_ratios = [
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5,
+    1.75,
+]
+launcher = 'none'
+load_from = None
+log_level = 'INFO'
+log_processor = dict(by_epoch=False)
+model = dict(
+    backbone=dict(type='WideRes38'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            123.675,
+            116.28,
+            103.53,
+        ],
+        pad_val=0,
+        seg_pad_val=255,
+        size=(
+            448,
+            448,
+        ),
+        std=[
+            58.395,
+            57.12,
+            57.375,
+        ],
+        type='SegDataPreProcessor'),
+    decode_head=dict(
+        align_corners=False,
+        channels=512,
+        dropout_ratio=0.1,
+        in_channels=4096,
+        in_index=3,
+        loss_decode=dict(
+            loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False),
+        norm_cfg=dict(requires_grad=True, type='SyncBN'),
+        num_classes=21,
+        pool_scales=(
+            1,
+            2,
+            3,
+            6,
+        ),
+        type='CAMHead'),
+    pretrained='data/models/res38d.pth',
+    test_cfg=dict(mode='whole'),
+    type='EncoderDecoder')
+norm_cfg = dict(requires_grad=True, type='SyncBN')
+optim_wrapper = dict(
+    clip_grad=None,
+    optimizer=dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005),
+    type='OptimWrapper')
+optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005)
+param_scheduler = [
+    dict(
+        begin=0,
+        by_epoch=False,
+        end=20000,
+        eta_min=0.0001,
+        power=0.9,
+        type='PolyLR'),
+]
+resume = False
+test_cfg = dict(
+    crf=True, crop_size=(
+        480,
+        480,
+    ), mode='slide', stride=(
+        480,
+        480,
+    ))
+test_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        ann_file='ImageSets/Segmentation/train.txt',
+        data_prefix=dict(
+            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+        data_root='data/VOCdevkit/VOC2012',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                448,
+                448,
+            ), type='Resize'),
+            dict(type='LoadAnnotations'),
+            dict(type='PackSegInputs'),
+        ],
+        type='PascalVOCDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    iou_metrics=[
+        'mIoU',
+    ], type='IoUMetric')
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(keep_ratio=True, scale=(
+        448,
+        448,
+    ), type='Resize'),
+    dict(type='LoadAnnotations'),
+    dict(type='PackSegInputs'),
+]
+train_cfg = dict(max_iters=10000, type='IterBasedTrainLoop', val_interval=1000)
+train_dataloader = dict(
+    batch_size=16,
+    dataset=dict(
+        ann_file='ImageSets/Segmentation/train.txt',
+        data_prefix=dict(
+            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+        data_root='data/VOCdevkit/VOC2012',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations'),
+            dict(
+                keep_ratio=True,
+                ratio_range=(
+                    0.5,
+                    2.0,
+                ),
+                scale=(
+                    448,
+                    448,
+                ),
+                type='RandomResize'),
+            dict(
+                cat_max_ratio=0.75, crop_size=(
+                    448,
+                    448,
+                ), type='RandomCrop'),
+            dict(prob=0.5, type='RandomFlip'),
+            dict(type='PhotoMetricDistortion'),
+            dict(type='PackSegInputs'),
+        ],
+        type='PascalVOCDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=True, type='InfiniteSampler'))
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations'),
+    dict(
+        keep_ratio=True,
+        ratio_range=(
+            0.5,
+            2.0,
+        ),
+        scale=(
+            448,
+            448,
+        ),
+        type='RandomResize'),
+    dict(cat_max_ratio=0.75, crop_size=(
+        448,
+        448,
+    ), type='RandomCrop'),
+    dict(prob=0.5, type='RandomFlip'),
+    dict(type='PhotoMetricDistortion'),
+    dict(type='PackSegInputs'),
+]
+tta_model = dict(type='SegTTAModel')
+tta_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(
+        transforms=[
+            [
+                dict(keep_ratio=True, scale_factor=0.5, type='Resize'),
+                dict(keep_ratio=True, scale_factor=0.75, type='Resize'),
+                dict(keep_ratio=True, scale_factor=1.0, type='Resize'),
+                dict(keep_ratio=True, scale_factor=1.25, type='Resize'),
+                dict(keep_ratio=True, scale_factor=1.5, type='Resize'),
+                dict(keep_ratio=True, scale_factor=1.75, type='Resize'),
+            ],
+            [
+                dict(direction='horizontal', prob=0.0, type='RandomFlip'),
+                dict(direction='horizontal', prob=1.0, type='RandomFlip'),
+            ],
+            [
+                dict(type='LoadAnnotations'),
+            ],
+            [
+                dict(type='PackSegInputs'),
+            ],
+        ],
+        type='TestTimeAug'),
+]
+val_cfg = dict(type='ValLoop')
+val_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        ann_file='ImageSets/Segmentation/train.txt',
+        data_prefix=dict(
+            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+        data_root='data/VOCdevkit/VOC2012',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                448,
+                448,
+            ), type='Resize'),
+            dict(type='LoadAnnotations'),
+            dict(type='PackSegInputs'),
+        ],
+        type='PascalVOCDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(
+    iou_metrics=[
+        'mIoU',
+    ], type='IoUMetric')
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='SegLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = 'work_dirs/wsss_voc12_res38'
+
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmseg/models/backbones/resnet38d.py:117: UserWarning: DeprecationWarning: pretrained is a deprecated, please use "init_cfg" instead
+  warnings.warn('DeprecationWarning: pretrained is a deprecated, '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmseg/models/builder.py:36: UserWarning: ``build_loss`` would be deprecated soon, please use ``mmseg.registry.MODELS.build()`` 
+  warnings.warn('``build_loss`` would be deprecated soon, please use '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmseg/models/losses/cross_entropy_loss.py:249: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+12/28 23:51:30 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmseg/engine/hooks/visualization_hook.py:61: UserWarning: The draw is False, it means that the hook for visualization will not take effect. The results will NOT be visualized or stored.
+  warnings.warn('The draw is False, it means that the '
+12/28 23:51:30 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+12/28 23:51:31 - mmengine - WARNING - The prefix is not set in metric class IoUMetric.
+12/28 23:51:31 - mmengine - WARNING - "FileClient" will be deprecated in future. Please use io functions in https://mmengine.readthedocs.io/en/latest/api/fileio.html#file-io
+12/28 23:51:31 - mmengine - WARNING - "HardDiskBackend" is the alias of "LocalBackend" and the former will be deprecated in future.
+12/28 23:51:31 - mmengine - INFO - Checkpoints will be saved to /media/ders/mazhiming/mmseg4wsss/mmsegmentation/work_dirs/wsss_voc12_res38.
+12/28 23:52:48 - mmengine - INFO - Iter(train) [   50/10000]  lr: 9.9782e-03  eta: 4:15:07  time: 1.4422  data_time: 0.0152  memory: 20659  loss: 1.1466  decode.loss_ce: 1.1466  decode.acc_seg: 66.8787
+12/28 23:53:50 - mmengine - INFO - Exp name: res38_cls_config_20231228_235126
+12/28 23:54:01 - mmengine - INFO - Iter(train) [  100/10000]  lr: 9.9559e-03  eta: 4:07:49  time: 1.4799  data_time: 0.0151  memory: 20579  loss: 1.2217  decode.loss_ce: 1.2217  decode.acc_seg: 58.9926
+12/28 23:55:16 - mmengine - INFO - Iter(train) [  150/10000]  lr: 9.9336e-03  eta: 4:05:34  time: 1.4845  data_time: 0.0146  memory: 20579  loss: 1.1309  decode.loss_ce: 1.1309  decode.acc_seg: 62.0766
+12/28 23:56:30 - mmengine - INFO - Iter(train) [  200/10000]  lr: 9.9113e-03  eta: 4:04:10  time: 1.4927  data_time: 0.0149  memory: 20580  loss: 0.9425  decode.loss_ce: 0.9425  decode.acc_seg: 75.2967
+12/28 23:57:45 - mmengine - INFO - Iter(train) [  250/10000]  lr: 9.8890e-03  eta: 4:03:07  time: 1.4981  data_time: 0.0164  memory: 20579  loss: 1.0043  decode.loss_ce: 1.0043  decode.acc_seg: 63.6070
+12/28 23:59:00 - mmengine - INFO - Iter(train) [  300/10000]  lr: 9.8667e-03  eta: 4:01:57  time: 1.4996  data_time: 0.0155  memory: 20578  loss: 1.1350  decode.loss_ce: 1.1350  decode.acc_seg: 76.5698
+12/29 00:00:15 - mmengine - INFO - Iter(train) [  350/10000]  lr: 9.8444e-03  eta: 4:00:52  time: 1.5068  data_time: 0.0141  memory: 20579  loss: 0.9901  decode.loss_ce: 0.9901  decode.acc_seg: 76.0048
+12/29 00:01:31 - mmengine - INFO - Iter(train) [  400/10000]  lr: 9.8221e-03  eta: 3:59:46  time: 1.5006  data_time: 0.0144  memory: 20579  loss: 1.0401  decode.loss_ce: 1.0401  decode.acc_seg: 69.6641
+12/29 00:02:45 - mmengine - INFO - Iter(train) [  450/10000]  lr: 9.7997e-03  eta: 3:58:19  time: 1.4844  data_time: 0.0147  memory: 20579  loss: 0.9938  decode.loss_ce: 0.9938  decode.acc_seg: 71.4368
+12/29 00:03:59 - mmengine - INFO - Iter(train) [  500/10000]  lr: 9.7774e-03  eta: 3:56:41  time: 1.4613  data_time: 0.0153  memory: 20579  loss: 0.9670  decode.loss_ce: 0.9670  decode.acc_seg: 72.0320
+12/29 00:05:12 - mmengine - INFO - Iter(train) [  550/10000]  lr: 9.7551e-03  eta: 3:54:57  time: 1.4590  data_time: 0.0184  memory: 20580  loss: 0.9895  decode.loss_ce: 0.9895  decode.acc_seg: 66.9232
+12/29 00:06:24 - mmengine - INFO - Iter(train) [  600/10000]  lr: 9.7327e-03  eta: 3:53:11  time: 1.4521  data_time: 0.0148  memory: 20579  loss: 0.9450  decode.loss_ce: 0.9450  decode.acc_seg: 65.9021
+12/29 00:07:37 - mmengine - INFO - Iter(train) [  650/10000]  lr: 9.7104e-03  eta: 3:51:37  time: 1.4650  data_time: 0.0156  memory: 20580  loss: 1.2194  decode.loss_ce: 1.2194  decode.acc_seg: 63.4439
+12/29 00:08:51 - mmengine - INFO - Iter(train) [  700/10000]  lr: 9.6880e-03  eta: 3:50:11  time: 1.4728  data_time: 0.0157  memory: 20579  loss: 1.3925  decode.loss_ce: 1.3925  decode.acc_seg: 53.0520
+12/29 00:10:05 - mmengine - INFO - Iter(train) [  750/10000]  lr: 9.6657e-03  eta: 3:48:54  time: 1.4839  data_time: 0.0143  memory: 20579  loss: 1.3279  decode.loss_ce: 1.3279  decode.acc_seg: 65.2057
+12/29 00:11:19 - mmengine - INFO - Iter(train) [  800/10000]  lr: 9.6433e-03  eta: 3:47:39  time: 1.4836  data_time: 0.0145  memory: 20580  loss: 1.0599  decode.loss_ce: 1.0599  decode.acc_seg: 58.2822
+12/29 00:12:33 - mmengine - INFO - Iter(train) [  850/10000]  lr: 9.6209e-03  eta: 3:46:27  time: 1.4957  data_time: 0.0150  memory: 20579  loss: 1.0209  decode.loss_ce: 1.0209  decode.acc_seg: 76.3852
+12/29 00:13:48 - mmengine - INFO - Iter(train) [  900/10000]  lr: 9.5986e-03  eta: 3:45:18  time: 1.4952  data_time: 0.0165  memory: 20579  loss: 1.1204  decode.loss_ce: 1.1204  decode.acc_seg: 74.9498
+12/29 00:15:03 - mmengine - INFO - Iter(train) [  950/10000]  lr: 9.5762e-03  eta: 3:44:10  time: 1.4989  data_time: 0.0154  memory: 20580  loss: 1.0612  decode.loss_ce: 1.0612  decode.acc_seg: 67.8605
+12/29 00:16:18 - mmengine - INFO - Exp name: res38_cls_config_20231228_235126
+12/29 00:16:18 - mmengine - INFO - Iter(train) [ 1000/10000]  lr: 9.5538e-03  eta: 3:43:01  time: 1.4962  data_time: 0.0147  memory: 20579  loss: 1.0138  decode.loss_ce: 1.0138  decode.acc_seg: 66.9728
+12/29 00:16:31 - mmengine - INFO - Iter(val) [  50/1464]    eta: 0:05:58  time: 0.1996  data_time: 0.0017  memory: 9728  
+12/29 00:16:38 - mmengine - INFO - Iter(val) [ 100/1464]    eta: 0:04:34  time: 0.2184  data_time: 0.0017  memory: 9724  
+12/29 00:16:46 - mmengine - INFO - Iter(val) [ 150/1464]    eta: 0:04:02  time: 0.0326  data_time: 0.0019  memory: 9728  
+12/29 00:16:51 - mmengine - INFO - Iter(val) [ 200/1464]    eta: 0:03:26  time: 0.2311  data_time: 0.0017  memory: 9715  
+12/29 00:16:57 - mmengine - INFO - Iter(val) [ 250/1464]    eta: 0:03:10  time: 0.1333  data_time: 0.0017  memory: 9725  
+12/29 00:16:59 - mmengine - INFO - Iter(val) [ 300/1464]    eta: 0:02:40  time: 0.0284  data_time: 0.0017  memory: 9663  
+12/29 00:17:01 - mmengine - INFO - Iter(val) [ 350/1464]    eta: 0:02:16  time: 0.0291  data_time: 0.0018  memory: 9637  
+12/29 00:17:08 - mmengine - INFO - Iter(val) [ 400/1464]    eta: 0:02:14  time: 0.0321  data_time: 0.0018  memory: 9723  
+12/29 00:17:15 - mmengine - INFO - Iter(val) [ 450/1464]    eta: 0:02:07  time: 0.0904  data_time: 0.0017  memory: 9723  
+12/29 00:17:19 - mmengine - INFO - Iter(val) [ 500/1464]    eta: 0:01:57  time: 0.1551  data_time: 0.0017  memory: 9722  
+12/29 00:17:23 - mmengine - INFO - Iter(val) [ 550/1464]    eta: 0:01:48  time: 0.0290  data_time: 0.0017  memory: 9708  
+12/29 00:17:27 - mmengine - INFO - Iter(val) [ 600/1464]    eta: 0:01:39  time: 0.1125  data_time: 0.0016  memory: 9710  
+12/29 00:17:31 - mmengine - INFO - Iter(val) [ 650/1464]    eta: 0:01:30  time: 0.0311  data_time: 0.0017  memory: 9726  
+12/29 00:17:33 - mmengine - INFO - Iter(val) [ 700/1464]    eta: 0:01:21  time: 0.0480  data_time: 0.0016  memory: 9700  
+12/29 00:17:36 - mmengine - INFO - Iter(val) [ 750/1464]    eta: 0:01:14  time: 0.0465  data_time: 0.0019  memory: 9719  
+12/29 00:17:40 - mmengine - INFO - Iter(val) [ 800/1464]    eta: 0:01:07  time: 0.0336  data_time: 0.0018  memory: 9714  
+12/29 00:17:43 - mmengine - INFO - Iter(val) [ 850/1464]    eta: 0:01:01  time: 0.0683  data_time: 0.0017  memory: 9724  
+12/29 00:17:45 - mmengine - INFO - Iter(val) [ 900/1464]    eta: 0:00:54  time: 0.0308  data_time: 0.0014  memory: 9655  
+12/29 00:17:49 - mmengine - INFO - Iter(val) [ 950/1464]    eta: 0:00:49  time: 0.1184  data_time: 0.0021  memory: 9729  
+12/29 00:17:54 - mmengine - INFO - Iter(val) [1000/1464]    eta: 0:00:44  time: 0.0296  data_time: 0.0017  memory: 9722  
+12/29 00:17:56 - mmengine - INFO - Iter(val) [1050/1464]    eta: 0:00:38  time: 0.0296  data_time: 0.0016  memory: 2580  
+12/29 00:17:59 - mmengine - INFO - Iter(val) [1100/1464]    eta: 0:00:33  time: 0.1582  data_time: 0.0016  memory: 9702  
+12/29 00:18:03 - mmengine - INFO - Iter(val) [1150/1464]    eta: 0:00:28  time: 0.1189  data_time: 0.0018  memory: 9679  
+12/29 00:18:05 - mmengine - INFO - Iter(val) [1200/1464]    eta: 0:00:23  time: 0.0759  data_time: 0.0020  memory: 9684  
+12/29 00:18:07 - mmengine - INFO - Iter(val) [1250/1464]    eta: 0:00:18  time: 0.0294  data_time: 0.0016  memory: 9693  
+12/29 00:18:09 - mmengine - INFO - Iter(val) [1300/1464]    eta: 0:00:14  time: 0.0293  data_time: 0.0019  memory: 9670  
+12/29 00:18:12 - mmengine - INFO - Iter(val) [1350/1464]    eta: 0:00:09  time: 0.0511  data_time: 0.0016  memory: 9669  
+12/29 00:18:14 - mmengine - INFO - Iter(val) [1400/1464]    eta: 0:00:05  time: 0.0277  data_time: 0.0015  memory: 9694  
+12/29 00:18:16 - mmengine - INFO - Iter(val) [1450/1464]    eta: 0:00:01  time: 0.0299  data_time: 0.0015  memory: 9693  
+12/29 00:18:17 - mmengine - INFO - per class results:
+12/29 00:18:17 - mmengine - INFO - 
++-------------+-------+-------+
+|    Class    |  IoU  |  Acc  |
++-------------+-------+-------+
+|  background | 73.36 | 100.0 |
+|  aeroplane  |  0.0  |  0.0  |
+|   bicycle   |  0.0  |  0.0  |
+|     bird    |  0.0  |  0.0  |
+|     boat    |  0.0  |  0.0  |
+|    bottle   |  0.0  |  0.0  |
+|     bus     |  0.0  |  0.0  |
+|     car     |  0.0  |  0.0  |
+|     cat     |  0.0  |  0.0  |
+|    chair    |  0.0  |  0.0  |
+|     cow     |  0.0  |  0.0  |
+| diningtable |  0.0  |  0.0  |
+|     dog     |  0.0  |  0.0  |
+|    horse    |  0.0  |  0.0  |
+|  motorbike  |  0.0  |  0.0  |
+|    person   |  0.0  |  0.0  |
+| pottedplant |  0.0  |  0.0  |
+|    sheep    |  0.0  |  0.0  |
+|     sofa    |  0.0  |  0.0  |
+|    train    |  0.0  |  0.0  |
+|  tvmonitor  |  0.0  |  0.0  |
++-------------+-------+-------+
+12/29 00:18:17 - mmengine - INFO - Iter(val) [1464/1464]    aAcc: 73.3600  mIoU: 3.4900  mAcc: 4.7600  data_time: 0.0020  time: 0.0809
+12/29 00:19:30 - mmengine - INFO - Iter(train) [ 1050/10000]  lr: 9.5314e-03  eta: 3:41:43  time: 1.4875  data_time: 0.0151  memory: 20579  loss: 1.0880  decode.loss_ce: 1.0880  decode.acc_seg: 66.6404
+12/29 00:20:45 - mmengine - INFO - Iter(train) [ 1100/10000]  lr: 9.5090e-03  eta: 3:40:27  time: 1.4869  data_time: 0.0159  memory: 20579  loss: 1.0090  decode.loss_ce: 1.0090  decode.acc_seg: 68.8486
+12/29 00:21:58 - mmengine - INFO - Iter(train) [ 1150/10000]  lr: 9.4866e-03  eta: 3:39:07  time: 1.4698  data_time: 0.0161  memory: 20579  loss: 0.9621  decode.loss_ce: 0.9621  decode.acc_seg: 79.1522
+12/29 00:23:11 - mmengine - INFO - Iter(train) [ 1200/10000]  lr: 9.4642e-03  eta: 3:37:44  time: 1.4582  data_time: 0.0145  memory: 20579  loss: 1.0914  decode.loss_ce: 1.0914  decode.acc_seg: 58.6658
+12/29 00:24:24 - mmengine - INFO - Iter(train) [ 1250/10000]  lr: 9.4418e-03  eta: 3:36:20  time: 1.4602  data_time: 0.0156  memory: 20579  loss: 1.1206  decode.loss_ce: 1.1206  decode.acc_seg: 72.9827
+12/29 00:25:37 - mmengine - INFO - Iter(train) [ 1300/10000]  lr: 9.4193e-03  eta: 3:34:59  time: 1.4686  data_time: 0.0136  memory: 20580  loss: 1.1566  decode.loss_ce: 1.1566  decode.acc_seg: 64.6111
+12/29 00:26:51 - mmengine - INFO - Iter(train) [ 1350/10000]  lr: 9.3969e-03  eta: 3:33:42  time: 1.4821  data_time: 0.0159  memory: 20580  loss: 1.0941  decode.loss_ce: 1.0941  decode.acc_seg: 62.5902

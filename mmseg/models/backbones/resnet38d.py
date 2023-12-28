@@ -108,16 +108,8 @@ class ResBlock_bot(nn.Module):
 @BACKBONES.register_module()
 class WideRes38(nn.Module):
     def __init__(self,pretrained=None,init_cfg=None):
-        super(WideRes38, self).__init__()
-        #预训练模型（新加）
         self.pretrained = pretrained
-        assert not (init_cfg and pretrained), \
-            'init_cfg and pretrained cannot be setting at the same time'
-        if isinstance(pretrained, str):
-            warnings.warn('DeprecationWarning: pretrained is a deprecated, '
-                          'please use "init_cfg" instead')
-            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
-        #
+        super(WideRes38, self).__init__()
         self.conv1a = nn.Conv2d(3, 64, 3, padding=1, bias=False)
 
         self.b2 = ResBlock(64, 128, 128, stride=2)
@@ -192,18 +184,23 @@ class WideRes38(nn.Module):
                 if isinstance(m, nn.SyncBatchNorm):
                     m.eval()
 
+    def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone.
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
+        if pretrained is None:
+            pretrained = self.pretrained
+        # pdb.set_trace()
+        if isinstance(pretrained, str):
+            # logger = get_root_logger()
+            load_checkpoint(self, pretrained, strict=False)
+            # pdb.set_trace()
+            
+        elif pretrained is None:
+            pass
+        else:
+            raise TypeError('pretrained must be a str or None')
 
-#*以下代码在mmseg本版本中已经废除
-    # def init_weights(self, pretrained=None):
-    #     """Initialize the weights in backbone.
-    #     Args:
-    #         pretrained (str, optional): Path to pre-trained weights.
-    #             Defaults to None.
-    #     """
-    #     if isinstance(pretrained, str):
-    #         # logger = get_root_logger()
-    #         load_checkpoint(self, pretrained, strict=False)
-    #     elif pretrained is None:
-    #         pass
-    #     else:
-    #         raise TypeError('pretrained must be a str or None')
+
