@@ -221,6 +221,7 @@ def wsss_cross_entropy(pred,
     Calculate the binary CrossEntropy loss.
     """
     #
+    label=label[0]
     label, weight, valid_mask = _expand_onehot_labels(
             label, weight, pred.shape, ignore_index)
 

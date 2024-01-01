@@ -14,6 +14,8 @@ from ..builder import build_loss
 from ..losses import accuracy
 from ..utils import resize
 
+import pdb
+
 
 class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
     """Base class for BaseDecodeHead.
@@ -301,7 +303,6 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-
         seg_label = self._stack_batch_gt(batch_data_samples)
         loss = dict()
         seg_logits = resize(

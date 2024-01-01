@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import inspect
+import string
 import warnings
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
@@ -18,6 +19,8 @@ from scipy.ndimage import gaussian_filter
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
+
+import pdb
 
 try:
     import albumentations
@@ -87,6 +90,18 @@ class ResizeToMultiple(BaseTransform):
                 scale_factor=1,
                 interpolation='nearest')
             results[key] = gt_seg
+        
+        #for sal map
+        pdb.set_trace()
+        if 'sal_fields' in results:
+            for key in results.get('sal_fields', []):
+                gt_seg = results[key]
+                gt_seg = mmcv.imresize_to_multiple(
+                    gt_seg,
+                    self.size_divisor,
+                    scale_factor=1,
+                    interpolation='nearest')
+                results[key] = gt_seg
 
         return results
 
@@ -328,6 +343,13 @@ class RandomCrop(BaseTransform):
         for key in results.get('seg_fields', []):
             results[key] = self.crop(results[key], crop_bbox)
 
+        
+        #for sal map
+        if 'sal_fields' in results:
+            for key in results.get('sal_fields', []):
+                results[key] = self.crop(results[key], crop_bbox)
+        
+
         results['img'] = img
         results['img_shape'] = img.shape[:2]
         return results
@@ -420,6 +442,18 @@ class RandomRotate(BaseTransform):
                     center=self.center,
                     auto_bound=self.auto_bound,
                     interpolation='nearest')
+            
+            #for sal map
+            if 'sal_fields' in results:
+                for key in results.get('sal_fields', []):
+                    results[key] = mmcv.imrotate(
+                        results[key],
+                        angle=degree,
+                        border_value=self.seg_pad_val,
+                        center=self.center,
+                        auto_bound=self.auto_bound,
+                        interpolation='nearest')
+                    
         return results
 
     def __repr__(self):
@@ -573,6 +607,12 @@ class SegRescale(BaseTransform):
             if self.scale_factor != 1:
                 results[key] = mmcv.imrescale(
                     results[key], self.scale_factor, interpolation='nearest')
+        #for sal
+        if 'sal_fields' in results:
+            for key in results.get('sal_fields', []):
+                if self.scale_factor != 1:
+                    results[key] = mmcv.imrescale(
+                        results[key], self.scale_factor, interpolation='nearest')
         return results
 
     def __repr__(self):
@@ -860,6 +900,11 @@ class RandomCutOut(BaseTransform):
                 if self.seg_fill_in is not None:
                     for key in results.get('seg_fields', []):
                         results[key][y1:y2, x1:x2] = self.seg_fill_in
+                    #for sal map
+                    if 'sal_fields' in results:
+                        for key in results.get('sal_fields', []):
+                            results[key][y1:y2, x1:x2] = self.seg_fill_in
+
 
         return results
 
@@ -924,6 +969,12 @@ class RandomRotFlip(BaseTransform):
         results['img'] = mmcv.imrotate(results['img'], angle=angle)
         for key in results.get('seg_fields', []):
             results[key] = mmcv.imrotate(results[key], angle=angle)
+
+        #for sal map
+        if 'sal_fields' in results:
+            for key in results.get('sal_fields', []):
+                results[key] = mmcv.imrotate(results[key], angle=angle)
+
         return results
 
     def transform(self, results: dict) -> dict:
@@ -1031,6 +1082,15 @@ class RandomFlip(MMCV_RandomFlip):
                     results[key], direction=results['flip_direction']).copy()
                 results['swap_seg_labels'] = self.swap_seg_labels
 
+        # flip saliency map
+        if 'sal_fields' in results:
+            for key in results.get('sal_fields', []):
+                if results.get(key, None) is not None:
+                    results[key] = self._flip_seg_map(
+                        results[key], direction=results['flip_direction']).copy()
+                    results['swap_sal_labels'] = self.swap_seg_labels    
+        # pdb.set_trace()            
+
 
 @TRANSFORMS.register_module()
 class Resize(MMCV_Resize):
@@ -1096,6 +1156,24 @@ class Resize(MMCV_Resize):
                         interpolation='nearest',
                         backend=self.backend)
                 results[seg_key] = gt_seg
+
+        #for sal map
+        if 'sal_fields' in results:
+            for seg_key in results.get('sal_fields', []):
+                if results.get(seg_key, None) is not None:
+                    if self.keep_ratio:
+                        gt_seg = mmcv.imrescale(
+                            results[seg_key],
+                            results['scale'],
+                            interpolation='nearest',
+                            backend=self.backend)
+                    else:
+                        gt_seg = mmcv.imresize(
+                            results[seg_key],
+                            results['scale'],
+                            interpolation='nearest',
+                            backend=self.backend)
+                    results[seg_key] = gt_seg
 
 
 @TRANSFORMS.register_module()
@@ -1389,7 +1467,7 @@ class RandomMosaic(BaseTransform):
         repr_str += f'seg_pad_val={self.pad_val})'
         return repr_str
 
-
+#*没有改
 @TRANSFORMS.register_module()
 class GenerateEdge(BaseTransform):
     """Generate Edge for CE2P approach.
@@ -1430,6 +1508,9 @@ class GenerateEdge(BaseTransform):
         h, w = results['img_shape']
         edge = np.zeros((h, w), dtype=np.uint8)
         seg_map = results['gt_seg_map']
+        # for sal map
+        # if 'sal_fields' in results:
+        #     sal_map = results['gt_sal_map']
 
         # down
         edge_down = edge[1:h, :]
@@ -2354,7 +2435,7 @@ class Albu(BaseTransform):
         self.aug = Compose([self.albu_builder(t) for t in self.transforms])
 
         if not keymap:
-            self.keymap_to_albu = {'img': 'image', 'gt_seg_map': 'mask'}
+            self.keymap_to_albu = {'img': 'image', 'gt_seg_map': 'mask','sal_map':'sal_map'}#加入sal无映射
         else:
             self.keymap_to_albu = copy.deepcopy(keymap)
         self.keymap_back = {v: k for k, v in self.keymap_to_albu.items()}

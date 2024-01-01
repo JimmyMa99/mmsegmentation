@@ -4,11 +4,11 @@ import os.path as osp
 import mmengine.fileio as fileio
 
 from mmseg.registry import DATASETS
-from .basesegdataset import BaseSegDataset
+from .basesegdataset import BaseSegDataset_SAL
 
 
 @DATASETS.register_module()
-class PascalVOCDataset_Sal(BaseSegDataset):
+class PascalVOCDataset_Sal(BaseSegDataset_SAL):
     """Pascal VOC dataset.
 
     Args:

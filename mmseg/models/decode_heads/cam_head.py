@@ -8,6 +8,9 @@ from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 import torch.nn.functional as F
+from mmseg.utils import ConfigType, SampleList
+from torch import Tensor
+from ..losses import accuracy
 import pdb
 
 
@@ -56,3 +59,65 @@ class CAMHead(BaseDecodeHead):
         #calculate 
         # output = self.cls_seg(output)
         return output
+    def _stack_batch_gt(self, batch_data_samples: SampleList) -> Tensor:
+        gt_semantic_segs = [
+            data_sample.gt_sem_seg.data for data_sample in batch_data_samples
+        ]
+        return torch.stack(gt_semantic_segs, dim=0)
+    
+    def _stack_batch_sal(self, batch_data_samples: SampleList) -> Tensor:
+        gt_sal_maps = [
+            data_sample.sal_map.data for data_sample in batch_data_samples
+        ]
+        return torch.stack(gt_sal_maps, dim=0)
+
+    def loss_by_feat(self, seg_logits: Tensor,
+                     batch_data_samples: SampleList) -> dict:
+        """Compute segmentation loss.
+
+        Args:
+            seg_logits (Tensor): The output from decode head forward function.
+            batch_data_samples (List[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such
+                as `metainfo` and `gt_sem_seg`.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
+        seg_label = self._stack_batch_gt(batch_data_samples)
+        sal_map = self._stack_batch_sal(batch_data_samples)
+        # seg_label=torch.stack(batch_data_samples, dim=0)
+        # sal_map=torch.stack(batch_data_samples, dim=0)
+        loss = dict()
+        seg_logits = resize(
+            input=seg_logits,
+            size=seg_label.shape[2:],
+            mode='bilinear',
+            align_corners=self.align_corners)
+        if self.sampler is not None:
+            seg_weight = self.sampler.sample(seg_logits, seg_label)
+        else:
+            seg_weight = None
+        seg_label = seg_label.squeeze(1)
+
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_decode in losses_decode:
+            if loss_decode.loss_name not in loss:
+                loss[loss_decode.loss_name] = loss_decode(
+                    seg_logits,
+                    [seg_label,sal_map],
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+            else:
+                loss[loss_decode.loss_name] += loss_decode(
+                    seg_logits,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+
+        loss['acc_seg'] = accuracy(
+            seg_logits, seg_label, ignore_index=self.ignore_index)
+        return loss
