@@ -90,3 +90,17 @@ class SegDataSample(BaseDataElement):
     @seg_logits.deleter
     def seg_logits(self) -> None:
         del self._seg_logits
+
+    #for sal
+    @property
+    def sal_map(self) -> PixelData:
+        return self._sal_map
+    
+    @sal_map.setter
+    def sal_map(self, value: PixelData) -> None:
+        self.set_field(value, '_sal_map', dtype=PixelData)
+    
+    @sal_map.deleter
+    def sal_map(self) -> None:
+        del self._sal_map
+

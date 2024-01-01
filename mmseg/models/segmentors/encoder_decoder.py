@@ -12,6 +12,7 @@ from mmseg.utils import (ConfigType, OptConfigType, OptMultiConfig,
                          OptSampleList, SampleList, add_prefix)
 from .base import BaseSegmentor
 
+import pdb
 
 @MODELS.register_module()
 class EncoderDecoder(BaseSegmentor):
@@ -138,7 +139,7 @@ class EncoderDecoder(BaseSegmentor):
         losses = dict()
         loss_decode = self.decode_head.loss(inputs, data_samples,
                                             self.train_cfg)
-
+        # pdb.set_trace()
         losses.update(add_prefix(loss_decode, 'decode'))
         return losses
 
@@ -174,7 +175,6 @@ class EncoderDecoder(BaseSegmentor):
         x = self.extract_feat(inputs)
 
         losses = dict()
-
         loss_decode = self._decode_head_forward_train(x, data_samples)
         losses.update(loss_decode)
 

@@ -11,6 +11,8 @@ from mmseg.utils import (ForwardResults, OptConfigType, OptMultiConfig,
                          OptSampleList, SampleList)
 from ..utils import resize
 
+import pdb
+
 
 class BaseSegmentor(BaseModel, metaclass=ABCMeta):
     """Base class for segmentors.
@@ -196,5 +198,6 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 'pred_sem_seg':
                 PixelData(**{'data': i_seg_pred})
             })
+
 
         return data_samples

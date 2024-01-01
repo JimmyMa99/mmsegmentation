@@ -2,6 +2,18 @@ crop_size = (
     512,
     512,
 )
+data = dict(
+    samples_per_gpu=2,
+    train=dict(
+        ann_dir='ppmg',
+        data_root='data/voc12/VOC2012/',
+        img_dir='JPEGImages',
+        split='ImageSets/Segmentation/trainaug.txt'),
+    val=dict(
+        ann_dir='SegmentationClass',
+        data_root='data/voc12/VOC2012/',
+        img_dir='JPEGImages',
+        split='ImageSets/Segmentation/train.txt'))
 data_preprocessor = dict(
     bgr_to_rgb=True,
     mean=[
@@ -21,18 +33,6 @@ data_preprocessor = dict(
         57.375,
     ],
     type='SegDataPreProcessor')
-data = dict(
-    samples_per_gpu=2,
-    test=dict(
-        ann_dir='SegmentationClass',
-        data_root='data/voc12/VOC2012/',
-        img_dir='JPEGImages',
-        split='ImageSets/Segmentation/val.txt'),
-    train=dict(
-        ann_dir='ppmg',
-        data_root='data/voc12/VOC2012/',
-        img_dir='JPEGImages',
-        split='ImageSets/Segmentation/trainaug.txt'))
 data_root = 'data/voc12/VOC2012/'
 dataset_type = 'PascalVOCDataset'
 default_hooks = dict(
@@ -60,29 +60,36 @@ load_from = None
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
 model = dict(
-    # decode_head=dict(
-    #     align_corners=False,
-    #     channels=256,
-    #     concat_input=False,
-    #     dropout_ratio=0.1,
-    #     in_channels=1024,
-    #     in_index=2,
-    #     # loss_decode=dict(
-    #     #     loss_weight=0.4, type='CrossEntropyLoss', use_sigmoid=False), #后面要算
-    #     norm_cfg=dict(requires_grad=True, type='SyncBN'),
-    #     num_classes=21,
-    #     num_convs=1,
-    #     type='FCNHead'),
     backbone=dict(type='WideRes38'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            123.675,
+            116.28,
+            103.53,
+        ],
+        pad_val=0,
+        seg_pad_val=255,
+        size=(
+            448,
+            448,
+        ),
+        std=[
+            58.395,
+            57.12,
+            57.375,
+        ],
+        type='SegDataPreProcessor'),
     decode_head=dict(
         align_corners=False,
         channels=512,
-        dropout_ratio=0.1,
+        # dropout_ratio=0.1,
         in_channels=4096,
         in_index=3,
-        loss_decode=dict(
-            loss_weight=0.4, type='CrossEntropyLoss', use_sigmoid=False),
-        norm_cfg=dict(requires_grad=True, type='SyncBN'),
+        loss_decode=[dict(
+            loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
+        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
+        # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
             1,
@@ -91,8 +98,8 @@ model = dict(
             6,
         ),
         type='CAMHead'),
-    data_preprocessor=data_preprocessor,
     pretrained='data/models/res38d.pth',
+    test_cfg=dict(mode='whole'),
     type='EncoderDecoder')
 norm_cfg = dict(requires_grad=True, type='SyncBN')
 optim_wrapper = dict(
@@ -121,7 +128,7 @@ test_cfg = dict(
 test_dataloader = dict(
     batch_size=1,
     dataset=dict(
-        ann_file='ImageSets/Segmentation/val.txt',
+        ann_file='ImageSets/Segmentation/train.txt',
         data_prefix=dict(
             img_path='JPEGImages', seg_map_path='SegmentationClass'),
         data_root='data/VOCdevkit/VOC2012',
@@ -151,17 +158,19 @@ test_pipeline = [
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs'),
 ]
-train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=2000)
+train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_dataloader = dict(
     batch_size=8,
     dataset=dict(
-        ann_file='ImageSets/Segmentation/train.txt',
+        ann_file='ImageSets/Segmentation/aug.txt',
         data_prefix=dict(
-            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+            img_path='JPEGImages', seg_map_path='SegmentationClassAug',sal_path='saliency_map'),
         data_root='data/VOCdevkit/VOC2012',
+        
+
         pipeline=[
             dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations'),
+            dict(type='LoadAnnotations_SAL'),
             dict(
                 keep_ratio=True,
                 ratio_range=(
@@ -182,13 +191,13 @@ train_dataloader = dict(
             dict(type='PhotoMetricDistortion'),
             dict(type='PackSegInputs'),
         ],
-        type='PascalVOCDataset'),
+        type='PascalVOCDataset_Sal'),
     num_workers=4,
     persistent_workers=True,
     sampler=dict(shuffle=True, type='InfiniteSampler'))
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations'),
+    dict(type='LoadAnnotations_SAL'),
     dict(
         keep_ratio=True,
         ratio_range=(
@@ -238,7 +247,7 @@ val_cfg = dict(type='ValLoop')
 val_dataloader = dict(
     batch_size=1,
     dataset=dict(
-        ann_file='ImageSets/Segmentation/val.txt',
+        ann_file='ImageSets/Segmentation/train.txt',
         data_prefix=dict(
             img_path='JPEGImages', seg_map_path='SegmentationClass'),
         data_root='data/VOCdevkit/VOC2012',
@@ -268,4 +277,4 @@ visualizer = dict(
     vis_backends=[
         dict(type='LocalVisBackend'),
     ])
-work_dir = 'work_dirs/voc12_res38_pus'
+work_dir = 'work_dirs/wsss_voc12_res38'

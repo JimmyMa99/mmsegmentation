@@ -161,9 +161,9 @@ train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_dataloader = dict(
     batch_size=8,
     dataset=dict(
-        ann_file='ImageSets/Segmentation/train.txt',
+        ann_file='ImageSets/Segmentation/aug.txt',
         data_prefix=dict(
-            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+            img_path='JPEGImages', seg_map_path='SegmentationClassAug'),
         data_root='data/VOCdevkit/VOC2012',
         pipeline=[
             dict(type='LoadImageFromFile'),

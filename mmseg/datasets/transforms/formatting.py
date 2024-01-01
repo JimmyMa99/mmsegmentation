@@ -9,6 +9,8 @@ from mmengine.structures import PixelData
 from mmseg.registry import TRANSFORMS
 from mmseg.structures import SegDataSample
 
+import pdb
+
 
 @TRANSFORMS.register_module()
 class PackSegInputs(BaseTransform):
@@ -73,6 +75,7 @@ class PackSegInputs(BaseTransform):
             packed_results['inputs'] = img
 
         data_sample = SegDataSample()
+        # print('11111------------------------------------------------------------------: ', results['gt_seg_map'])
         if 'gt_seg_map' in results:
             if len(results['gt_seg_map'].shape) == 2:
                 data = to_tensor(results['gt_seg_map'][None,
@@ -91,11 +94,18 @@ class PackSegInputs(BaseTransform):
                 data=to_tensor(results['gt_edge_map'][None,
                                                       ...].astype(np.int64)))
             data_sample.set_data(dict(gt_edge_map=PixelData(**gt_edge_data)))
-
         if 'gt_depth_map' in results:
             gt_depth_data = dict(
                 data=to_tensor(results['gt_depth_map'][None, ...]))
             data_sample.set_data(dict(gt_depth_map=PixelData(**gt_depth_data)))
+        # 
+        # print('sal_map' in results)
+        #for sal
+        if 'sal_map' in results:
+            sal_map_data = dict(
+                data=to_tensor(results['sal_map'][None,
+                                                      ...].astype(np.int64)))
+            data_sample.set_data(dict(sal_map=PixelData(**sal_map_data)))
 
         img_meta = {}
         for key in self.meta_keys:
