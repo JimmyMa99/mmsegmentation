@@ -38,7 +38,7 @@ def stack_batch(inputs: List[torch.Tensor],
 
     Args:
         inputs (List[Tensor]): The input multiple tensors. each is a
-            CHW 3D-tensor.
+            CHW 3D-tensdaor.
         data_samples (list[:obj:`SegDataSample`]): The list of data samples.
             It usually includes information such as `gt_sem_seg`.
         size (tuple, optional): Fixed padding size.
@@ -118,7 +118,7 @@ def stack_batch(inputs: List[torch.Tensor],
                 sal_map = data_sample.sal_map.data/255.0
                 del data_sample.sal_map.data
                 data_sample.sal_map.data = F.pad(
-                    sal_map, padding_size, value=seg_pad_val)
+                    sal_map, padding_size, value=0)
                 pad_shape = data_sample.sal_map.shape
             data_sample.set_metainfo({
                 'img_shape': tensor.shape[-2:],

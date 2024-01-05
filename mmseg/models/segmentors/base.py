@@ -12,6 +12,8 @@ from mmseg.utils import (ForwardResults, OptConfigType, OptMultiConfig,
 from ..utils import resize
 
 import pdb
+import torch.nn.functional as F
+import torch
 
 
 class BaseSegmentor(BaseModel, metaclass=ABCMeta):
@@ -201,3 +203,145 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
 
 
         return data_samples
+
+    def wsss_postprocess_result(self,
+                           seg_logits: Tensor,
+                           data_samples: OptSampleList = None) -> SampleList:
+        """ Convert results list to `SegDataSample`.
+        Args:
+            seg_logits (Tensor): The segmentation results, seg_logits from
+                model of each input image.
+            data_samples (list[:obj:`SegDataSample`]): The seg data samples.
+                It usually includes information such as `metainfo` and
+                `gt_sem_seg`. Default to None.
+        Returns:
+            list[:obj:`SegDataSample`]: Segmentation results of the
+            input images. Each SegDataSample usually contain:
+
+            - ``pred_sem_seg``(PixelData): Prediction of semantic segmentation.
+            - ``seg_logits``(PixelData): Predicted logits of semantic
+                segmentation before normalization.
+        """
+        batch_size, C, H, W = seg_logits.shape
+
+        if data_samples is None:
+            data_samples = [SegDataSample() for _ in range(batch_size)]
+            only_prediction = True
+        else:
+            only_prediction = False
+
+        for i in range(batch_size):
+            if not only_prediction:
+                img_meta = data_samples[i].metainfo
+                # remove padding area
+                if 'img_padding_size' not in img_meta:
+                    padding_size = img_meta.get('padding_size', [0] * 4)
+                else:
+                    padding_size = img_meta['img_padding_size']
+                padding_left, padding_right, padding_top, padding_bottom =\
+                    padding_size
+                # i_seg_logits shape is 1, C, H, W after remove padding
+                i_seg_logits = seg_logits[i:i + 1, :,
+                                          padding_top:H - padding_bottom,
+                                          padding_left:W - padding_right]
+
+                flip = img_meta.get('flip', None)
+                if flip:
+                    flip_direction = img_meta.get('flip_direction', None)
+                    assert flip_direction in ['horizontal', 'vertical']
+                    if flip_direction == 'horizontal':
+                        i_seg_logits = i_seg_logits.flip(dims=(3, ))
+                    else:
+                        i_seg_logits = i_seg_logits.flip(dims=(2, ))
+
+                # resize as original shape
+                i_seg_logits = resize(
+                    i_seg_logits,
+                    size=img_meta['ori_shape'],
+                    mode='bilinear',
+                    align_corners=self.align_corners,
+                    warning=False).squeeze(0)
+            else:
+                i_seg_logits = seg_logits[i]
+            # pdb.set_trace()
+            if C > 1:
+                th=0.2
+                i_seg_logits=make_cam(i_seg_logits.unsqueeze(0)).squeeze(0)
+                # pdb.set_trace()
+                mask=data_samples[i].gt_sem_seg.data
+                
+                # # pdb.set_trace()
+                label=change_to_onehot_tensor(mask,i_seg_logits.unsqueeze(0).shape)
+                # pdb.set_trace()
+                i_seg_logits*=label.squeeze(0).expand(i_seg_logits.shape).to(i_seg_logits.dtype)
+                # pdb.set_trace()
+                # i_seg_logits = F.softmax(i_seg_logits,dim=0)
+                
+                # i_seg_logits = i_seg_logits.sigmoid()
+                i_seg_logits[0,:]=th
+                # pdb.set_trace()
+                i_seg_pred = (i_seg_logits).argmax(dim=0,keepdim=True)
+            else:
+                
+                i_seg_logits = i_seg_logits.sigmoid()
+                i_seg_pred = (i_seg_logits >
+                              self.decode_head.threshold).to(i_seg_logits)
+
+
+            data_samples[i].set_data({
+                'seg_logits':
+                PixelData(**{'data': i_seg_logits}),
+                'pred_sem_seg':
+                PixelData(**{'data': i_seg_pred})
+            })
+
+
+        return data_samples
+    
+def make_cam(x, epsilon=1e-5):
+    # relu(x) = max(x, 0)
+    x = F.relu(x)
+    
+    b, c, h, w = x.size()
+
+    flat_x = x.view(b, c, (h * w))
+    max_value = flat_x.max(axis=-1)[0].view((b, c, 1, 1))
+    
+    return F.relu(x - epsilon) / (max_value + epsilon)
+
+def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
+    """Expand onehot labels to match the size of prediction."""
+    bin_labels = labels.new_zeros(target_shape)
+    valid_mask = (labels >= 0) & (labels != ignore_index)
+    inds = torch.nonzero(valid_mask, as_tuple=True)
+
+    if inds[0].numel() > 0:
+        if labels.dim() == 3:
+            bin_labels[inds[0], labels[valid_mask], inds[1], inds[2]] = 1
+        else:
+            bin_labels[inds[0], labels[valid_mask]] = 1
+
+    valid_mask = valid_mask.unsqueeze(1).expand(target_shape).float()
+
+    if label_weights is None:
+        bin_label_weights = valid_mask
+    else:
+        bin_label_weights = label_weights.unsqueeze(1).expand(target_shape)
+        bin_label_weights = bin_label_weights * valid_mask
+
+    return bin_labels, bin_label_weights, valid_mask
+
+def change_to_onehot_tensor(labels,shape):
+    # pdb.set_trace()
+    label, weight, valid_mask=_expand_onehot_labels(labels, None, shape, 255)
+    # pdb.set_trace()
+    b, c, h, w = label.shape
+    label = torch.sum(label.view(b, c, -1),dim=-1)
+    # pdb.set_trace()
+    label[label>0]=1
+    # pdb.set_trace()
+    
+
+    
+
+    return label.unsqueeze(-1).unsqueeze(-1)

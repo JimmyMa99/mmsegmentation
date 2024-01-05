@@ -27,8 +27,9 @@ def eps_lossfn(cam, saliency, num_classes, label, tau, lam, intermediate=True):
         saliency (N, 1, H, W)
         label (N, C)
     """
-    # pdb.set_trace()
+    
     b, c, h, w = cam.size()
+    # pdb.set_trace()
     saliency = F.interpolate(saliency, size=(h, w))
 
     label_map = label.view(b, num_classes, 1, 1).expand(size=(b, num_classes, h, w)).bool()
@@ -225,7 +226,6 @@ def binary_cross_entropy(pred,
 
     loss = F.binary_cross_entropy_with_logits(
         pred, label.float(), pos_weight=class_weight, reduction='none')
-    pdb.set_trace()
     # do the reduction for the weighted loss
     loss = weight_reduce_loss(
         loss, weight, reduction=reduction, avg_factor=avg_factor)
@@ -311,20 +311,23 @@ def eps_wsss_loss(pred,
     #
     label=target[0]
     sal=target[1]
-    b,c,h,w=pred.size()
-
+    pred_=target[-1]
+    # b,c,h,w=pred.size()
+    # pdb.set_trace()
     label, weight, valid_mask = _expand_onehot_labels(
             label, weight, pred.shape, ignore_index)
 
+    b,c,h,w=pred_.size()
+    pred_ = F.avg_pool2d(pred_, kernel_size=(h, w), padding=0)
+    
     b,c,h,w=pred.size()
-    pred = F.avg_pool2d(pred, kernel_size=(h, w), padding=0)
-
     label = torch.sum(label.view(b, c, -1),dim=-1)
-    label = torch.where(label>0,torch.ones_like(label),torch.zeros_like(label)).unsqueeze(-1).unsqueeze(-1)
+    label[label>0]=1
+    label = label.unsqueeze(-1).unsqueeze(-1)
 
-
-    pred=torch.roll(pred, shifts=1, dims=1)
-    eps_loss =  eps_lossfn(pred, sal, c-1, label[:,1:],
+    # pdb.set_trace()
+    pred_=torch.roll(pred_, shifts=-1, dims=1)
+    eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
                         0.4, 0.5, intermediate=False)
     
     # pred=torch.roll(pred, shifts=-1, dims=0)

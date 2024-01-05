@@ -30,7 +30,8 @@ class CAMHead(BaseDecodeHead):
         super().__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         # pdb.set_trace()
-        self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1)
+        self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
+        torch.nn.init.xavier_uniform_(self.fc8.weight)
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
         ``self.cls_seg`` fc.
@@ -43,6 +44,7 @@ class CAMHead(BaseDecodeHead):
                 H, W) which is feature map for last layer of decoder head.
         """
         # x = self._transform_inputs(inputs)
+        # pdb.set_trace()
         if isinstance(inputs, list):
             x = inputs[-1]#取最后一层4096
         feats = self.fc8(x)
@@ -89,6 +91,7 @@ class CAMHead(BaseDecodeHead):
         # seg_label=torch.stack(batch_data_samples, dim=0)
         # sal_map=torch.stack(batch_data_samples, dim=0)
         loss = dict()
+        cam=seg_logits
         seg_logits = resize(
             input=seg_logits,
             size=seg_label.shape[2:],
@@ -108,7 +111,7 @@ class CAMHead(BaseDecodeHead):
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logits,
-                    [seg_label,sal_map],
+                    [seg_label,sal_map,cam],
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
             else:

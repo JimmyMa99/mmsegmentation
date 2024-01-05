@@ -172,17 +172,39 @@ class WideRes38(nn.Module):
         x = self.b7(x)
         conv6 = F.relu(self.bn7(x))
 
+        # self.not_training = [self.conv1a, self.b2, self.b2_1, self.b2_2]
+
         return [conv3, conv4, conv5, conv6]
 
+    def _freeze_stages(self): #eps train
+            for layer in [self.conv1a, self.b2, self.b2_1, self.b2_2]:
+                if isinstance(layer, torch.nn.Conv2d):
+                    layer.weight.requires_grad = False
+
+                elif isinstance(layer, torch.nn.Module):
+                    for c in layer.children():
+                        c.weight.requires_grad = False
+                        if c.bias is not None:
+                            c.bias.requires_grad = False
+
+            for layer in self.modules():
+
+                if isinstance(layer, torch.nn.BatchNorm2d):
+                    layer.eval()
+                    layer.bias.requires_grad = False
+                    layer.weight.requires_grad = False
     def train(self, mode=True):
         """Convert the model into training mode while keep normalization layer
         freezed."""
         super(WideRes38, self).train(mode)
+        self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on SyncBatchNorm only
                 if isinstance(m, nn.SyncBatchNorm):
                     m.eval()
+
+    
 
     def init_weights(self, pretrained=None):
         """Initialize the weights in backbone.
@@ -202,5 +224,27 @@ class WideRes38(nn.Module):
             pass
         else:
             raise TypeError('pretrained must be a str or None')
+        
+    def get_parameter_groups(self):
+        groups = ([], [], [], [])
+
+        for m in self.modules():
+
+            if isinstance(m, nn.Conv2d):
+
+                if m.weight.requires_grad:
+                    if m in self.from_scratch_layers:
+                        groups[2].append(m.weight)
+                    else:
+                        groups[0].append(m.weight)
+
+                if m.bias is not None and m.bias.requires_grad:
+
+                    if m in self.from_scratch_layers:
+                        groups[3].append(m.bias)
+                    else:
+                        groups[1].append(m.bias)
+
+        return groups
 
 

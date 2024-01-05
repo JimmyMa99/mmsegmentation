@@ -15,7 +15,7 @@ from .base import BaseSegmentor
 import pdb
 
 @MODELS.register_module()
-class EncoderDecoder(BaseSegmentor):
+class WSSSEncoderDecoder(BaseSegmentor):
     """Encoder Decoder segmentors.
 
     EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
@@ -219,7 +219,7 @@ class EncoderDecoder(BaseSegmentor):
 
         seg_logits = self.inference(inputs, batch_img_metas)
         # pdb.set_trace()
-        return self.postprocess_result(seg_logits, data_samples)
+        return self.wsss_postprocess_result(seg_logits, data_samples)
 
     def _forward(self,
                  inputs: Tensor,
