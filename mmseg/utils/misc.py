@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 
 from .typing_utils import SampleList
-
+import pdb
 
 def add_prefix(inputs, prefix):
     """Add prefix for dict.
@@ -38,7 +38,7 @@ def stack_batch(inputs: List[torch.Tensor],
 
     Args:
         inputs (List[Tensor]): The input multiple tensors. each is a
-            CHW 3D-tensor.
+            CHW 3D-tensdaor.
         data_samples (list[:obj:`SegDataSample`]): The list of data samples.
             It usually includes information such as `gt_sem_seg`.
         size (tuple, optional): Fixed padding size.
@@ -114,12 +114,14 @@ def stack_batch(inputs: List[torch.Tensor],
                     gt_depth_map, padding_size, value=seg_pad_val)
                 pad_shape = data_sample.gt_depth_map.shape
             #for sal
+            # pdb.set_trace()
             if 'sal_map' in data_sample:
                 sal_map = data_sample.sal_map.data/255.0
                 del data_sample.sal_map.data
                 data_sample.sal_map.data = F.pad(
-                    sal_map, padding_size, value=seg_pad_val)
+                    sal_map, padding_size, value=0)
                 pad_shape = data_sample.sal_map.shape
+            # pdb.set_trace()
             data_sample.set_metainfo({
                 'img_shape': tensor.shape[-2:],
                 'pad_shape': pad_shape,

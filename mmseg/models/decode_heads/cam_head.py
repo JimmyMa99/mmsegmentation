@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-
+from typing import List
 from mmseg.registry import MODELS
 from ..utils import resize
 from .decode_head import BaseDecodeHead
@@ -30,7 +30,8 @@ class CAMHead(BaseDecodeHead):
         super().__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         # pdb.set_trace()
-        self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1)
+        self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
+        torch.nn.init.xavier_uniform_(self.fc8.weight)
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
         ``self.cls_seg`` fc.
@@ -43,6 +44,7 @@ class CAMHead(BaseDecodeHead):
                 H, W) which is feature map for last layer of decoder head.
         """
         # x = self._transform_inputs(inputs)
+        # pdb.set_trace()
         if isinstance(inputs, list):
             x = inputs[-1]#取最后一层4096
         feats = self.fc8(x)
@@ -89,6 +91,7 @@ class CAMHead(BaseDecodeHead):
         # seg_label=torch.stack(batch_data_samples, dim=0)
         # sal_map=torch.stack(batch_data_samples, dim=0)
         loss = dict()
+        cam=seg_logits
         seg_logits = resize(
             input=seg_logits,
             size=seg_label.shape[2:],
@@ -108,7 +111,7 @@ class CAMHead(BaseDecodeHead):
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logits,
-                    [seg_label,sal_map],
+                    [seg_label,sal_map,cam],
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
             else:
@@ -121,3 +124,23 @@ class CAMHead(BaseDecodeHead):
         loss['acc_seg'] = accuracy(
             seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
+    def predict(self, inputs: List[Tensor], prev_output: Tensor,
+            batch_img_metas: List[dict], tese_cfg: ConfigType):
+        """Forward function for testing.
+
+        Args:
+            inputs (List[Tensor]): List of multi-level img features.
+            prev_output (Tensor): The output of previous decode head.
+            batch_img_metas (dict): List Image info where each dict may also
+                contain: 'img_shape', 'scale_factor', 'flip', 'img_path',
+                'ori_shape', and 'pad_shape'.
+                For details on the values of these keys see
+                `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
+            test_cfg (dict): The testing config.
+
+        Returns:
+            Tensor: Output segmentation map.
+        """
+        seg_logits = self.forward(inputs)
+
+        return self.predict_by_feat(seg_logits, batch_img_metas)

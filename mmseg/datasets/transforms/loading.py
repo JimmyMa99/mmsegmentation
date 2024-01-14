@@ -298,7 +298,7 @@ class LoadAnnotations_SAL(MMCV_LoadAnnotations):
 
             
             results['sal_map'] = saliency_map
-            results['sal_fields'].append('sal_map')
+            results['seg_fields'].append('sal_map')
 
     def __repr__(self) -> str:
         repr_str = self.__class__.__name__

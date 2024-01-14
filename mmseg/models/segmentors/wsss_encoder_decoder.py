@@ -15,7 +15,7 @@ from .base import BaseSegmentor
 import pdb
 
 @MODELS.register_module()
-class EncoderDecoder(BaseSegmentor):
+class WSSSEncoderDecoder(BaseSegmentor):
     """Encoder Decoder segmentors.
 
     EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
@@ -173,7 +173,7 @@ class EncoderDecoder(BaseSegmentor):
         """
 
         x = self.extract_feat(inputs)
-        pdb.set_trace()
+        # pdb.set_trace()
         losses = dict()
         loss_decode = self._decode_head_forward_train(x, data_samples)
         losses.update(loss_decode)
@@ -216,10 +216,10 @@ class EncoderDecoder(BaseSegmentor):
                     pad_shape=inputs.shape[2:],
                     padding_size=[0, 0, 0, 0])
             ] * inputs.shape[0]
-
-        seg_logits = self.inference(inputs, batch_img_metas)
         # pdb.set_trace()
-        return self.postprocess_result(seg_logits, data_samples)
+        seg_logits = self.inference(inputs, batch_img_metas)
+        
+        return self.wsss_postprocess_result(seg_logits, data_samples)
 
     def _forward(self,
                  inputs: Tensor,
@@ -236,7 +236,6 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: Forward output of model without any post-processes.
         """
         x = self.extract_feat(inputs)
-        # pdb.set_trace()
         return self.decode_head.forward(x)
 
     def slide_inference(self, inputs: Tensor,

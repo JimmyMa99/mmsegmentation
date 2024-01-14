@@ -255,4 +255,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=200))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res38'
+work_dir = 'work_dirs/wsss_voc12_res38_cp'

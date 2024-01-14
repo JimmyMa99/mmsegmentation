@@ -3,4 +3,6 @@ from .citys_metric import CityscapesMetric
 from .depth_metric import DepthMetric
 from .iou_metric import IoUMetric
 
-__all__ = ['IoUMetric', 'CityscapesMetric', 'DepthMetric']
+from .cam_iou_metric import CAMIoUMetric
+
+__all__ = ['IoUMetric', 'CityscapesMetric', 'DepthMetric', 'CAMIoUMetric']

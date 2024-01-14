@@ -8,7 +8,7 @@ from mmengine.model import BaseDataPreprocessor
 from mmseg.registry import MODELS
 from mmseg.utils import stack_batch
 
-
+import pdb
 @MODELS.register_module()
 class SegDataPreProcessor(BaseDataPreprocessor):
     """Image pre-processor for segmentation tasks.
@@ -106,6 +106,7 @@ class SegDataPreProcessor(BaseDataPreprocessor):
         Returns:
             Dict: Data in the same format as the model input.
         """
+        # pdb.set_trace()
         data = self.cast_data(data)  # type: ignore
         inputs = data['inputs']
         data_samples = data.get('data_samples', None)
