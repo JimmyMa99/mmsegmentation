@@ -220,7 +220,6 @@ def wsss_cross_entropy(pred,
     """
     Calculate the binary CrossEntropy loss.
     """
-    #
     # pdb.set_trace()
     label=label[0]
     label, weight, valid_mask = _expand_onehot_labels(
@@ -228,11 +227,12 @@ def wsss_cross_entropy(pred,
 
     b,c,h,w=pred.size()
     pred = F.avg_pool2d(pred, kernel_size=(h, w), padding=0)
+    pred = pred.view(pred.size(0), -1)
 
     label = torch.sum(label.view(b, c, -1),dim=-1)
-    label = torch.where(label>0,torch.ones_like(label),torch.zeros_like(label)).unsqueeze(-1).unsqueeze(-1)
+    label = torch.where(label>0,torch.ones_like(label),torch.zeros_like(label))
     # pdb.set_trace()
-    return F.multilabel_soft_margin_loss(pred[:,1:,:,:], label[:,1:,:,:])
+    return F.multilabel_soft_margin_loss(pred[:,1:], label[:,1:])
 
 
 @MODELS.register_module()

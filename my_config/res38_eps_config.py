@@ -2,18 +2,6 @@ crop_size = (
     448,
     448,
 )
-data = dict(
-    samples_per_gpu=2,
-    train=dict(
-        ann_dir='ppmg',
-        data_root='data/voc12/VOC2012/',
-        img_dir='JPEGImages',
-        split='ImageSets/Segmentation/trainaug.txt'),
-    val=dict(
-        ann_dir='SegmentationClass',
-        data_root='data/voc12/VOC2012/',
-        img_dir='JPEGImages',
-        split='ImageSets/Segmentation/train.txt'))
 data_preprocessor = dict(
     bgr_to_rgb=True,
     mean=[
@@ -22,7 +10,7 @@ data_preprocessor = dict(
         103.53,
     ],
     pad_val=0,
-    seg_pad_val=0,
+    seg_pad_val=255,
     size=(
         448,
         448,
@@ -33,15 +21,7 @@ data_preprocessor = dict(
         57.375,
     ],
     type='SegDataPreProcessor')
-data_root = 'data/voc12/VOC2012/'
 dataset_type = 'PascalVOCDataset'
-default_hooks = dict(
-    checkpoint=dict(by_epoch=False, interval=500, type='CheckpointHook'),
-    logger=dict(interval=50, log_metric_by_epoch=False, type='LoggerHook'),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    timer=dict(type='IterTimerHook'),
-    visualization=dict(type='SegVisualizationHook'))
 default_scope = 'mmseg'
 env_cfg = dict(
     cudnn_benchmark=True,
@@ -68,9 +48,8 @@ model = dict(
         # dropout_ratio=0.1,
         in_channels=4096,
         in_index=3,
-        loss_decode=[dict(
-            loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
+        loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
+                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
@@ -80,28 +59,28 @@ model = dict(
             1,#56*56->4096channels
         ),
         type='CAMHead'),
-    pretrained='data/models/res38d.pth',
+    pretrained='data/models/res38d_mxnet.pth',
     test_cfg=dict(mode='whole'),
     type='WSSSEncoderDecoder')
-norm_cfg = dict(requires_grad=True, type='SyncBN')
+# norm_cfg = dict(requires_grad=True, type='SyncBN')
 
-optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005,
-                )#norm和conv_weight的lr_mult都是1
+optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005,)
 optim_wrapper = dict(
     clip_grad=None,
     optimizer=optimizer,
     type='OptimWrapper',
     paramwise_cfg = dict(
     custom_keys={
-    'head': dict(lr_mult=10.,weight_decay_mul=0.0005)},bias_lr_mult=2.,bias_decay_mult=0.))
+    'decode_head.fc8': dict(lr_mult=10.),
+    }))
 
-
+#lr衰减
 param_scheduler = [
     dict(
         begin=0,
         by_epoch=False,
         end=20000,
-        eta_min=0.,
+        eta_min=0.0001,
         power=0.9,
         type='PolyLR'),
 ]
@@ -122,10 +101,6 @@ test_dataloader = dict(
         data_root='data/VOCdevkit/VOC2012',
         pipeline=[
             dict(type='LoadImageFromFile'),
-            # dict(keep_ratio=True, scale=(
-            #     448,
-            #     448,
-            # ), type='Resize'),
             dict(type='LoadAnnotations'),
             dict(type='PackSegInputs'),
         ],
@@ -151,12 +126,11 @@ train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
-
     dict(
         keep_ratio=True,
         ratio_range=(
-            0.8,
-            1.2,
+            1.0,
+            1.0,
         ),
         scale=(
             256,
@@ -165,9 +139,9 @@ train_pipeline = [
         type='RandomResize'),
 
     dict(prob=0.5, type='RandomFlip'),
-    dict(type='PhotoMetricDistortion',brightness_delta=int(0.3*255), contrast_range=(0.7, 1.3),  # 调整对比度的范围
+    dict(type='PhotoMetricDistortion',brightness_delta=77, contrast_range=(0.7, 1.3),  # 调整对比度的范围
     saturation_range=(0.7, 1.3),  # 调整饱和度的范围
-    hue_delta=int(0.1*255)),
+    hue_delta=26),
     dict(cat_max_ratio=0.75, crop_size=(
         448,
         448,
@@ -181,11 +155,9 @@ train_dataloader = dict(
         data_prefix=dict(
             img_path='JPEGImages', seg_map_path='SegmentationClassAug',sal_path='saliency_map'),
         data_root='data/VOCdevkit/VOC2012',
-        
-
         pipeline=train_pipeline,
         type='PascalVOCDataset_Sal'),
-    num_workers=4,
+    num_workers=8,
     persistent_workers=True,
     sampler=dict(shuffle=True, type='InfiniteSampler'))
 
@@ -252,7 +224,7 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook', draw=True, interval=200))
+    visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
 work_dir = 'work_dirs/wsss_voc12_res38'

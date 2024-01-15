@@ -32,6 +32,7 @@ class CAMHead(BaseDecodeHead):
         # pdb.set_trace()
         self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
         torch.nn.init.xavier_uniform_(self.fc8.weight)
+
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
         ``self.cls_seg`` fc.
@@ -47,6 +48,8 @@ class CAMHead(BaseDecodeHead):
         # pdb.set_trace()
         if isinstance(inputs, list):
             x = inputs[-1]#取最后一层4096
+        else:
+            raise TypeError('inputs must be a list of Tensor')
         feats = self.fc8(x)
   
         return feats
@@ -124,8 +127,8 @@ class CAMHead(BaseDecodeHead):
         loss['acc_seg'] = accuracy(
             seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
-    def predict(self, inputs: List[Tensor], prev_output: Tensor,
-            batch_img_metas: List[dict], tese_cfg: ConfigType):
+    def predict(self, inputs: List[Tensor],
+            batch_img_metas: List[dict]):
         """Forward function for testing.
 
         Args:

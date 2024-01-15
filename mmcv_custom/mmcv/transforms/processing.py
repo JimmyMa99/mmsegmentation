@@ -222,6 +222,23 @@ class Resize(BaseTransform):
                     backend=self.backend)
             results['gt_seg_map'] = gt_seg
 
+    def _resize_sal(self, results: dict) -> None:
+        """Resize semantic segmentation map with ``results['scale']``."""
+        if results.get('sal_map', None) is not None:
+            if self.keep_ratio:
+                sal = mmcv.imrescale(
+                    results['sal_map'],
+                    results['scale'],
+                    interpolation='nearest',
+                    backend=self.backend)
+            else:
+                sal = mmcv.imresize(
+                    results['sal_map'],
+                    results['scale'],
+                    interpolation='nearest',
+                    backend=self.backend)
+            results['sal_map'] = sal
+
     def _resize_keypoints(self, results: dict) -> None:
         """Resize keypoints with ``results['scale_factor']``."""
         if results.get('gt_keypoints', None) is not None:
@@ -258,6 +275,7 @@ class Resize(BaseTransform):
         self._resize_bboxes(results)
         self._resize_seg(results)
         self._resize_keypoints(results)
+        self._resize_sal(results)
         return results
 
     def __repr__(self):
@@ -1340,6 +1358,7 @@ class RandomFlip(BaseTransform):
             results['gt_seg_map'] = self._flip_seg_map(
                 results['gt_seg_map'], direction=results['flip_direction'])
             results['swap_seg_labels'] = self.swap_seg_labels
+        #***********
 
     def _flip_on_direction(self, results: dict) -> None:
         """Function to flip images, bounding boxes, semantic segmentation map

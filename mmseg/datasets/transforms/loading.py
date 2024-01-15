@@ -17,6 +17,8 @@ try:
 except ImportError:
     gdal = None
 
+import pdb
+
 
 @TRANSFORMS.register_module()
 class LoadAnnotations(MMCV_LoadAnnotations):
@@ -126,44 +128,6 @@ class LoadAnnotations(MMCV_LoadAnnotations):
         results['gt_seg_map'] = gt_semantic_seg
         results['seg_fields'].append('gt_seg_map')
 
-    def _load_sal_map(self, results: dict) -> None:
-            """Private function to load semantic segmentation annotations.
-
-            Args:
-                results (dict): Result dict from :obj:``mmcv.BaseDataset``.
-
-            Returns:
-                dict: The dict contains loaded semantic segmentation annotations.
-            """
-
-            img_bytes = fileio.get(
-                results['sal_map_path'], backend_args=self.backend_args)
-            saliency_map = mmcv.imfrombytes(
-                img_bytes, flag='unchanged',
-                backend=self.imdecode_backend).squeeze().astype(np.uint8)
-
-            # reduce zero_label
-            if self.reduce_zero_label is None:
-                self.reduce_zero_label = results['reduce_zero_label']
-            assert self.reduce_zero_label == results['reduce_zero_label'], \
-                'Initialize dataset with `reduce_zero_label` as ' \
-                f'{results["reduce_zero_label"]} but when load annotation ' \
-                f'the `reduce_zero_label` is {self.reduce_zero_label}'
-            if self.reduce_zero_label:
-                # avoid using underflow conversion
-                saliency_map[saliency_map == 0] = 255
-                saliency_map = saliency_map - 1
-                saliency_map[saliency_map == 254] = 255
-            # modify if custom classes
-            if results.get('label_map', None) is not None:
-                # Add deep copy to solve bug of repeatedly
-                # replace `gt_semantic_seg`, which is reported in
-                # https://github.com/open-mmlab/mmsegmentation/pull/1445/
-                saliency_map = saliency_map.copy()
-                for old_id, new_id in results['label_map'].items():
-                    saliency_map[saliency_map == old_id] = new_id
-            results['sal_map'] = saliency_map
-            results['sal_fields'].append('sal_map')
 
     def __repr__(self) -> str:
         repr_str = self.__class__.__name__
@@ -295,8 +259,7 @@ class LoadAnnotations_SAL(MMCV_LoadAnnotations):
             saliency_map = mmcv.imfrombytes(
                 img_bytes, flag='unchanged',
                 backend=self.imdecode_backend).squeeze().astype(np.float32)
-
-            
+                   
             results['sal_map'] = saliency_map
             results['seg_fields'].append('sal_map')
 

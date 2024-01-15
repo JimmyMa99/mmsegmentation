@@ -20,6 +20,8 @@ from scipy.ndimage import gaussian_filter
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
 
+from mmcv.transforms.processing import RandomResize
+
 import pdb
 
 try:
@@ -92,7 +94,7 @@ class ResizeToMultiple(BaseTransform):
             results[key] = gt_seg
         
         #for sal map
-        pdb.set_trace()
+        # pdb.set_trace()
         if 'sal_fields' in results:
             for key in results.get('sal_fields', []):
                 gt_seg = results[key]
@@ -340,15 +342,15 @@ class RandomCrop(BaseTransform):
         # crop the image
         img = self.crop(img, crop_bbox)
 
-        # crop semantic seg
+        # crop semantic seg & sal map
         for key in results.get('seg_fields', []):
             results[key] = self.crop(results[key], crop_bbox)
 
         
-        #for sal map
-        if 'sal_fields' in results:
-            for key in results.get('sal_fields', []):
-                results[key] = self.crop(results[key], crop_bbox)
+        # #for sal map
+        # if 'sal_fields' in results:
+        #     for key in results.get('sal_fields', []):
+        #         results[key] = self.crop(results[key], crop_bbox)
         
 
         results['img'] = img
@@ -1075,21 +1077,20 @@ class RandomFlip(MMCV_RandomFlip):
             results['gt_bboxes'] = self._flip_bbox(results['gt_bboxes'],
                                                    img_shape,
                                                    results['flip_direction'])
-
         # flip seg map
         for key in results.get('seg_fields', []):
             if results.get(key, None) is not None:
+
                 results[key] = self._flip_seg_map(
                     results[key], direction=results['flip_direction']).copy()
                 results['swap_seg_labels'] = self.swap_seg_labels
-
         # flip saliency map
-        if 'sal_fields' in results:
-            for key in results.get('sal_fields', []):
-                if results.get(key, None) is not None:
-                    results[key] = self._flip_seg_map(
-                        results[key], direction=results['flip_direction']).copy()
-                    results['swap_sal_labels'] = self.swap_seg_labels    
+        # if 'sal_fields' in results:
+        #     for key in results.get('sal_fields', []):
+        #         if results.get(key, None) is not None:
+        #             results[key] = self._flip_seg_map(
+        #                 results[key], direction=results['flip_direction']).copy()
+        #             results['swap_sal_labels'] = self.swap_seg_labels    
         # pdb.set_trace()            
 
 

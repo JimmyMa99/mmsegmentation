@@ -128,7 +128,7 @@ class WSSSEncoderDecoder(BaseSegmentor):
         map of the same size as input."""
         x = self.extract_feat(inputs)
         seg_logits = self.decode_head.predict(x, batch_img_metas,
-                                              self.test_cfg)
+                                              )
 
         return seg_logits
 
@@ -139,7 +139,6 @@ class WSSSEncoderDecoder(BaseSegmentor):
         losses = dict()
         loss_decode = self.decode_head.loss(inputs, data_samples,
                                             self.train_cfg)
-        # pdb.set_trace()
         losses.update(add_prefix(loss_decode, 'decode'))
         return losses
 
@@ -171,7 +170,8 @@ class WSSSEncoderDecoder(BaseSegmentor):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-
+        #plt.imsave('sal.png',np.repeat(data_samples[0].sal_map.data.cpu().numpy().transpose(1,2,0),3,axis=-1))
+        #plt.imsave('img.png',(inputs[0,...].cpu().numpy().transpose(1,2,0)*255.).astype(np.uint8))
         x = self.extract_feat(inputs)
         # pdb.set_trace()
         losses = dict()

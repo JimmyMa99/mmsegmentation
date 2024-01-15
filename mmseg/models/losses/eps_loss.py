@@ -311,7 +311,8 @@ def eps_wsss_loss(pred,
     #
     label=target[0]
     sal=target[1]
-    sal=torch.mean(sal,dim=1,keepdim=True)
+    # pdb.set_trace()
+    # sal=torch.mean(sal,dim=1,keepdim=True)
     pred_=target[-1]
     # b,c,h,w=pred.size()
     # pdb.set_trace()
@@ -326,8 +327,7 @@ def eps_wsss_loss(pred,
     label[label>0]=1
     label = label.unsqueeze(-1).unsqueeze(-1)
 
-    # pdb.set_trace()
-    pred_=torch.roll(target[-1], shifts=-1, dims=1)
+    pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
     eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
                         0.4, 0.5, intermediate=False)
     
