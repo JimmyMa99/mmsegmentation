@@ -340,7 +340,7 @@ def change_to_onehot_tensor(labels,shape):
     # pdb.set_trace()
     label[label>0]=1
     # pdb.set_trace()
-    
+    label=label.float()
 
     
 
