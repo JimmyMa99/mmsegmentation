@@ -330,7 +330,7 @@ class LoadAnnotations(BaseTransform):
         else:
             img_bytes = fileio.get(
                 results['sal_path'], backend_args=self.backend_args)
-        pdb.set_trace()
+        # pdb.set_trace()
         results['sal_path'] = mmcv.imfrombytes(
             img_bytes, flag='unchanged',
             backend=self.imdecode_backend).squeeze()

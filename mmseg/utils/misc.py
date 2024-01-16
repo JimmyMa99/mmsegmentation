@@ -116,7 +116,7 @@ def stack_batch(inputs: List[torch.Tensor],
             #for sal
             # pdb.set_trace()
             if 'sal_map' in data_sample:
-                sal_map = data_sample.sal_map.data/255.0
+                sal_map = data_sample.sal_map.data/255.
                 del data_sample.sal_map.data
                 data_sample.sal_map.data = F.pad(
                     sal_map, padding_size, value=0)

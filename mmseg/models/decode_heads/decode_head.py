@@ -498,10 +498,11 @@ class BaseDecodeHead_wsss(BaseModule, metaclass=ABCMeta):
             self.sampler = None
 
         self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1,bias=False)
-        if dropout_ratio > 0:
-            self.dropout = nn.Dropout2d(dropout_ratio)
-        else:
-            self.dropout = None
+        # pdb.set_trace()
+        # if dropout_ratio > 0:
+        #     self.dropout = nn.Dropout2d(dropout_ratio)
+        # else:
+        self.dropout = None
 
     def extra_repr(self):
         """Extra repr."""

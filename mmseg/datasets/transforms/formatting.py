@@ -85,7 +85,7 @@ class PackSegInputs(BaseTransform):
                               'segmentation map, usually the segmentation '
                               'map is 2D, but got '
                               f'{results["gt_seg_map"].shape}')
-                data = to_tensor(results['gt_seg_map'].astype(np.int64))
+                data = to_tensor(results['gt_seg_map'].astype(np.float32))
             gt_sem_seg_data = dict(data=data)
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
 
@@ -104,7 +104,7 @@ class PackSegInputs(BaseTransform):
         if 'sal_map' in results:
             sal_map_data = dict(
                 data=to_tensor(results['sal_map'][None,
-                                                      ...].astype(np.int64)))
+                                                      ...].astype(np.float32)))
             data_sample.set_data(dict(sal_map=PixelData(**sal_map_data)))
 
         img_meta = {}

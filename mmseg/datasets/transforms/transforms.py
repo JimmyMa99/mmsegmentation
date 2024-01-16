@@ -94,7 +94,7 @@ class ResizeToMultiple(BaseTransform):
             results[key] = gt_seg
         
         #for sal map
-        # pdb.set_trace()
+        pdb.set_trace()
         if 'sal_fields' in results:
             for key in results.get('sal_fields', []):
                 gt_seg = results[key]

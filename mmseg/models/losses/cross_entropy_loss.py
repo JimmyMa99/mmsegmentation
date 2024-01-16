@@ -231,7 +231,7 @@ def wsss_cross_entropy(pred,
     # pdb.set_trace()
     label = torch.sum(label.view(b, c, -1),dim=-1)
     label[label>0]=1
-    pdb.set_trace()
+    # pdb.set_trace()
 
     return F.multilabel_soft_margin_loss(pred[:,1:], label[:,1:])
 

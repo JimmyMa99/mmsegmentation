@@ -259,7 +259,7 @@ class LoadAnnotations_SAL(MMCV_LoadAnnotations):
             saliency_map = mmcv.imfrombytes(
                 img_bytes, flag='unchanged',
                 backend=self.imdecode_backend).squeeze().astype(np.float32)
-                   
+            saliency_map = saliency_map
             results['sal_map'] = saliency_map
             results['seg_fields'].append('sal_map')
 
