@@ -418,6 +418,19 @@ class Pad(BaseTransform):
                 shape=results['pad_shape'][:2],
                 pad_val=pad_val,
                 padding_mode=self.padding_mode)
+    def _pad_sal(self, results: dict) -> None:
+        """Pad semantic segmentation map according to
+        ``results['pad_shape']``."""
+        if results.get('sal_map', None) is not None:
+            pad_val = self.pad_val.get('seg', 255)
+            if isinstance(pad_val, int) and results['sal_map'].ndim == 3:
+                pad_val = tuple(
+                    pad_val for _ in range(results['sal_map'].shape[2]))
+            results['sal_map'] = mmcv.impad(
+                results['sal_map'],
+                shape=results['pad_shape'][:2],
+                pad_val=pad_val,
+                padding_mode=self.padding_mode)
 
     def transform(self, results: dict) -> dict:
         """Call function to pad images, masks, semantic segmentation maps.
@@ -430,6 +443,7 @@ class Pad(BaseTransform):
         """
         self._pad_img(results)
         self._pad_seg(results)
+        self._pad_sal(results)
         return results
 
     def __repr__(self):

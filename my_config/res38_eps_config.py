@@ -44,7 +44,7 @@ model = dict(
     backbone=dict(type='WideRes38'),
     decode_head=dict(
         align_corners=False,
-        channels=512,
+        channels=4096,
         # dropout_ratio=0.1,
         in_channels=4096,
         in_index=3,
@@ -71,7 +71,7 @@ optim_wrapper = dict(
     type='OptimWrapper',
     paramwise_cfg = dict(
     custom_keys={
-    'decode_head.fc8': dict(lr_mult=10.),
+    'decode_head.conv_seg': dict(lr_mult=10.),
     }))
 
 #lr衰减
@@ -92,22 +92,7 @@ test_cfg = dict(type='TestLoop')
 #     , mode='slide', stride=
 #         170
 #     )
-test_dataloader = dict(
-    batch_size=1,
-    dataset=dict(
-        ann_file='ImageSets/Segmentation/train.txt',
-        data_prefix=dict(
-            img_path='JPEGImages', seg_map_path='SegmentationClass'),
-        data_root='data/VOCdevkit/VOC2012',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations'),
-            dict(type='PackSegInputs'),
-        ],
-        type='PascalVOCDataset'),
-    num_workers=4,
-    persistent_workers=True,
-    sampler=dict(shuffle=False, type='DefaultSampler'))
+
 test_evaluator = dict(
     iou_metrics=[
         'mIoU',
@@ -128,14 +113,8 @@ train_pipeline = [
     dict(type='LoadAnnotations_SAL'),
     dict(
         keep_ratio=True,
-        ratio_range=(
-            1.0,
-            1.0,
-        ),
-        scale=(
-            256,
-            512,
-        ),
+        ratio_range=(0.8,1.2),
+        scale=(256,512),
         type='RandomResize'),
 
     dict(prob=0.5, type='RandomFlip'),
@@ -146,6 +125,7 @@ train_pipeline = [
         448,
         448,
     ), type='RandomCrop'),
+    # dict(type='Pad', size=crop_size),
     dict(type='PackSegInputs'),
 ]
 train_dataloader = dict(
@@ -162,32 +142,31 @@ train_dataloader = dict(
     sampler=dict(shuffle=True, type='InfiniteSampler'))
 
 tta_model = dict(type='SegTTAModel')
+img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', backend_args=None),
     dict(
+        type='TestTimeAug',
         transforms=[
             [
-                dict(keep_ratio=True, scale_factor=0.5, type='Resize'),
-                dict(keep_ratio=True, scale_factor=0.75, type='Resize'),
-                dict(keep_ratio=True, scale_factor=1.0, type='Resize'),
-                dict(keep_ratio=True, scale_factor=1.25, type='Resize'),
-                dict(keep_ratio=True, scale_factor=1.5, type='Resize'),
-                dict(keep_ratio=True, scale_factor=1.75, type='Resize'),
+                dict(type='Resize', scale_factor=r, keep_ratio=True)
+                for r in img_ratios
             ],
             [
-                dict(direction='horizontal', prob=0.0, type='RandomFlip'),
-                dict(direction='horizontal', prob=1.0, type='RandomFlip'),
-            ],
-            [
-                dict(type='LoadAnnotations'),
-            ],
-            [
-                dict(type='PackSegInputs'),
-            ],
-        ],
-        type='TestTimeAug'),
+                dict(type='RandomFlip', prob=0., direction='horizontal'),
+                dict(type='RandomFlip', prob=1., direction='horizontal')
+            ], [dict(type='LoadAnnotations')], [dict(type='PackSegInputs')]
+        ])
 ]
 val_cfg = dict(type='ValLoop')
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='Resize', scale=(256, 512), keep_ratio=True),
+    # add loading annotation after ``Resize`` because ground truth
+    # does not need to do resize data transform
+    dict(type='LoadAnnotations'),
+    dict(type='PackSegInputs')
+]
 val_dataloader = dict(
     batch_size=1,
     dataset=dict(
@@ -195,16 +174,8 @@ val_dataloader = dict(
         data_prefix=dict(
             img_path='JPEGImages', seg_map_path='SegmentationClass'),
         data_root='data/VOCdevkit/VOC2012',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            # dict(keep_ratio=True, scale=(
-            #     448,
-            #     448,
-            # ), type='Resize'),
-            dict(type='LoadAnnotations'),
-            dict(type='PackSegInputs'),
-        ],
-        type='PascalVOCDataset'),
+        pipeline=test_pipeline,
+        type='PascalVOCDataset',),
     num_workers=4,
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
@@ -212,6 +183,7 @@ val_evaluator = dict(
     iou_metrics=[
         'mIoU',
     ], type='IoUMetric')
+test_dataloader = val_dataloader
 #####################不用改#####################
 vis_backends = [dict(type='LocalVisBackend'),
                 dict(type='TensorboardVisBackend')]

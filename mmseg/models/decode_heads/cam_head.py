@@ -5,7 +5,7 @@ from mmcv.cnn import ConvModule
 from typing import List
 from mmseg.registry import MODELS
 from ..utils import resize
-from .decode_head import BaseDecodeHead
+from .decode_head import BaseDecodeHead, BaseDecodeHead_wsss
 
 import torch.nn.functional as F
 from mmseg.utils import ConfigType, SampleList
@@ -13,9 +13,13 @@ from torch import Tensor
 from ..losses import accuracy
 import pdb
 
+from abc import ABCMeta, abstractmethod
+from typing import List, Tuple
+
+from mmengine.model import BaseModule
 
 @MODELS.register_module()
-class CAMHead(BaseDecodeHead):
+class CAMHead(BaseDecodeHead_wsss):
     """Pyramid Scene Parsing Network.
 
     This head is the implementation of
@@ -30,8 +34,8 @@ class CAMHead(BaseDecodeHead):
         super().__init__(**kwargs)
         assert isinstance(pool_scales, (list, tuple))
         # pdb.set_trace()
-        self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
-        torch.nn.init.xavier_uniform_(self.fc8.weight)
+        # self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
+        torch.nn.init.xavier_uniform_(self.conv_seg.weight)
 
     def _forward_feature(self, inputs):
         """Forward function for feature maps before classifying each pixel with
@@ -50,7 +54,7 @@ class CAMHead(BaseDecodeHead):
             x = inputs[-1]#取最后一层4096
         else:
             raise TypeError('inputs must be a list of Tensor')
-        feats = self.fc8(x)
+        feats = self.conv_seg(x)
   
         return feats
 
@@ -147,3 +151,4 @@ class CAMHead(BaseDecodeHead):
         seg_logits = self.forward(inputs)
 
         return self.predict_by_feat(seg_logits, batch_img_metas)
+    

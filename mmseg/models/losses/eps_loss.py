@@ -325,8 +325,8 @@ def eps_wsss_loss(pred,
     b,c,h,w=pred.size()
     label = torch.sum(label.view(b, c, -1),dim=-1)
     label[label>0]=1
-    label = label.unsqueeze(-1).unsqueeze(-1)
-
+    # label = label.unsqueeze(-1).unsqueeze(-1)
+    # pdb.set_trace()
     pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
     eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
                         0.4, 0.5, intermediate=False)
