@@ -297,14 +297,14 @@ def wsss_cross_entropy(pred,
 
 
 def eps_wsss_loss(pred,
-                         target,
-                         weight=None,
-                         reduction='mean',
-                         avg_factor=None,
-                         class_weight=None,
-                         ignore_index=-100,
-                         avg_non_ignore=False,
-                         **kwargs):
+                    target,
+                    weight=None,
+                    reduction='mean',
+                    avg_factor=None,
+                    class_weight=None,
+                    ignore_index=-100,
+                    avg_non_ignore=False,
+                    **kwargs):
     """
     Calculate the binary CrossEntropy loss.
     """

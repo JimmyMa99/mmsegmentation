@@ -218,7 +218,7 @@ class WSSSEncoderDecoder(BaseSegmentor):
             ] * inputs.shape[0]
         # pdb.set_trace()
         seg_logits = self.inference(inputs, batch_img_metas)
-        
+        # pdb.set_trace()
         return self.wsss_postprocess_result(seg_logits, data_samples)
 
     def _forward(self,
@@ -310,7 +310,7 @@ class WSSSEncoderDecoder(BaseSegmentor):
         """
 
         seg_logits = self.encode_decode(inputs, batch_img_metas)
-
+        # pdb.set_trace()
         return seg_logits
 
     def inference(self, inputs: Tensor, batch_img_metas: List[dict]) -> Tensor:

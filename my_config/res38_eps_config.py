@@ -161,7 +161,7 @@ tta_pipeline = [
 val_cfg = dict(type='ValLoop')
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(256, 512), keep_ratio=True),
+    # dict(type='Resize', scale=(256, 512), keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
     dict(type='LoadAnnotations'),
@@ -194,7 +194,7 @@ default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=500),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################

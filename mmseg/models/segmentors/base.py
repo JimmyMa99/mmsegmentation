@@ -14,7 +14,7 @@ from ..utils import resize
 import pdb
 import torch.nn.functional as F
 import torch
-
+import numpy as np
 
 class BaseSegmentor(BaseModel, metaclass=ABCMeta):
     """Base class for segmentors.
@@ -231,6 +231,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             only_prediction = False
 
         for i in range(batch_size):
+
             if not only_prediction:
                 img_meta = data_samples[i].metainfo
                 # remove padding area
@@ -253,34 +254,47 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                         i_seg_logits = i_seg_logits.flip(dims=(3, ))
                     else:
                         i_seg_logits = i_seg_logits.flip(dims=(2, ))
-
+                # pdb.set_trace()
+                i_seg_logits=F.softmax(i_seg_logits,dim=1)
+                # pdb.set_trace()
                 # resize as original shape
                 i_seg_logits = resize(
                     i_seg_logits,
                     size=img_meta['ori_shape'],
                     mode='bilinear',
-                    align_corners=self.align_corners,
+                    align_corners=False,
                     warning=False).squeeze(0)
             else:
                 i_seg_logits = seg_logits[i]
             # pdb.set_trace()
             if C > 1:
-                th=0.2
+                mask=data_samples[i].gt_sem_seg.data
+                label=change_to_onehot_tensor(mask,i_seg_logits.unsqueeze(0).shape)
+
+
                 i_seg_logits=make_cam(i_seg_logits.unsqueeze(0)).squeeze(0)
                 # pdb.set_trace()
-                mask=data_samples[i].gt_sem_seg.data
+                i_seg_logits*=label.squeeze(0).expand(i_seg_logits.shape).to(i_seg_logits.dtype)
+                th=0.2
+                i_seg_logits[0,...]=th
+                # cam_fg=i_seg_logits[1:,...]
+                # sum_cam=torch.sum(cam_fg,dim=0)
+                # sum_cam_np=sum_cam.cpu().numpy()
+                # # pdb.set_trace()
+                # norm_cam = sum_cam_np / (np.max(sum_cam_np, (0, 1), keepdims=True) + 1e-5)
+                # norm_cam_tensor=torch.Tensor(norm_cam).unsqueeze(0)
+                # pdb.set_trace()
+                # i_seg_logits[1:,...]=norm_cam_tensor
                 
                 # # pdb.set_trace()
-                label=change_to_onehot_tensor(mask,i_seg_logits.unsqueeze(0).shape)
-                # pdb.set_trace()
-                i_seg_logits*=label.squeeze(0).expand(i_seg_logits.shape).to(i_seg_logits.dtype)
+
                 # pdb.set_trace()
                 # i_seg_logits = F.softmax(i_seg_logits,dim=0)
                 
                 # i_seg_logits = i_seg_logits.sigmoid()
-                i_seg_logits[0,...]=th
+                
                 # pdb.set_trace()
-                i_seg_pred = (i_seg_logits).argmax(dim=0,keepdim=True)
+                i_seg_pred = (i_seg_logits).argmax(dim=0,keepdim=True).to(torch.uint8)
             else:
                 
                 i_seg_logits = i_seg_logits.sigmoid()
@@ -300,14 +314,14 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
     
 def make_cam(x, epsilon=1e-5):
     # relu(x) = max(x, 0)
-    x = F.relu(x)
+    # x = F.relu(x)
     
     b, c, h, w = x.size()
 
     flat_x = x.view(b, c, (h * w))
     max_value = flat_x.max(axis=-1)[0].view((b, c, 1, 1))
     
-    return F.relu(x - epsilon) / (max_value + epsilon)
+    return x  / (max_value + epsilon)
 
 def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     """Expand onehot labels to match the size of prediction."""

@@ -98,7 +98,7 @@ class CAMHead(BaseDecodeHead_wsss):
         # seg_label=torch.stack(batch_data_samples, dim=0)
         # sal_map=torch.stack(batch_data_samples, dim=0)
         loss = dict()
-        cam=seg_logits
+        cam=seg_logits.clone()
         seg_logits = resize(
             input=seg_logits,
             size=seg_label.shape[2:],
@@ -108,6 +108,7 @@ class CAMHead(BaseDecodeHead_wsss):
             seg_weight = self.sampler.sample(seg_logits, seg_label)
         else:
             seg_weight = None
+        # pdb.set_trace()
         seg_label = seg_label.squeeze(1)
 
         if not isinstance(self.loss_decode, nn.ModuleList):
@@ -128,8 +129,8 @@ class CAMHead(BaseDecodeHead_wsss):
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
 
-        loss['acc_seg'] = accuracy(
-            seg_logits, seg_label, ignore_index=self.ignore_index)
+        # loss['acc_seg'] = accuracy(
+        #     seg_logits, seg_label, ignore_index=self.ignore_index)
         return loss
     def predict(self, inputs: List[Tensor],
             batch_img_metas: List[dict]):
@@ -149,6 +150,8 @@ class CAMHead(BaseDecodeHead_wsss):
             Tensor: Output segmentation map.
         """
         seg_logits = self.forward(inputs)
+        # pdb.set_trace()
+        # seg_logits_=self.predict_by_feat(seg_logits, batch_img_metas)
 
-        return self.predict_by_feat(seg_logits, batch_img_metas)
+        return seg_logits
     
