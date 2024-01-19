@@ -152,6 +152,7 @@ class CAMHead(BaseDecodeHead_wsss):
         seg_logits = self.forward(inputs)
         # pdb.set_trace()
         # seg_logits_=self.predict_by_feat(seg_logits, batch_img_metas)
+        seg_logits = torch.roll(seg_logits, shifts=1, dims=1)
 
         return seg_logits
     

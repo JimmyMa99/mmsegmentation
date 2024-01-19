@@ -113,8 +113,8 @@ train_pipeline = [
     dict(type='LoadAnnotations_SAL'),
     dict(
         keep_ratio=True,
-        ratio_range=(0.8,1.2),
-        scale=(256,512),
+        ratio_range=(0.9,1.1),
+        scale=(512,512),
         type='RandomResize'),
 
     dict(prob=0.5, type='RandomFlip'),
@@ -199,4 +199,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res38'
+work_dir = 'work_dirs/wsss_voc12_res38_roll'

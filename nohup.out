@@ -18213,3 +18213,536 @@ Loads checkpoint by local backend from path: work_dirs/wsss_voc12_res38/iter_200
   warnings.warn('The shape of value will convert from '
 /media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([412, 500]) to torch.Size([1, 412, 500])
   warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 375]) to torch.Size([1, 500, 375])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([336, 500]) to torch.Size([1, 336, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([435, 450]) to torch.Size([1, 435, 450])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([374, 500]) to torch.Size([1, 374, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([480, 318]) to torch.Size([1, 480, 318])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([334, 500]) to torch.Size([1, 334, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 387]) to torch.Size([1, 500, 387])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 333]) to torch.Size([1, 500, 333])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([328, 500]) to torch.Size([1, 328, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 351]) to torch.Size([1, 500, 351])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([315, 275]) to torch.Size([1, 315, 275])
+  warnings.warn('The shape of value will convert from '
+01/18 11:45:29 - mmengine - INFO - Iter(test) [  50/1464]    eta: 0:31:05  time: 1.0498  data_time: 0.0158  memory: 8955  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([397, 500]) to torch.Size([1, 397, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 329]) to torch.Size([1, 500, 329])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([335, 500]) to torch.Size([1, 335, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([369, 500]) to torch.Size([1, 369, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([340, 500]) to torch.Size([1, 340, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([212, 320]) to torch.Size([1, 212, 320])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([238, 500]) to torch.Size([1, 238, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 332]) to torch.Size([1, 500, 332])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([314, 500]) to torch.Size([1, 314, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([370, 500]) to torch.Size([1, 370, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 336]) to torch.Size([1, 500, 336])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 458]) to torch.Size([1, 500, 458])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 354]) to torch.Size([1, 500, 354])
+  warnings.warn('The shape of value will convert from '
+01/18 11:46:23 - mmengine - INFO - Iter(test) [ 100/1464]    eta: 0:26:54  time: 1.3199  data_time: 0.0157  memory: 8891  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 398]) to torch.Size([1, 500, 398])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 500]) to torch.Size([1, 500, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([382, 500]) to torch.Size([1, 382, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([318, 480]) to torch.Size([1, 318, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([366, 500]) to torch.Size([1, 366, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([311, 500]) to torch.Size([1, 311, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([411, 500]) to torch.Size([1, 411, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([360, 480]) to torch.Size([1, 360, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([388, 500]) to torch.Size([1, 388, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([330, 500]) to torch.Size([1, 330, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([342, 500]) to torch.Size([1, 342, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:47:19 - mmengine - INFO - Iter(test) [ 150/1464]    eta: 0:25:49  time: 0.6745  data_time: 0.0149  memory: 12030  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([254, 500]) to torch.Size([1, 254, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([324, 500]) to torch.Size([1, 324, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 499]) to torch.Size([1, 500, 499])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 334]) to torch.Size([1, 500, 334])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([373, 500]) to torch.Size([1, 373, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([371, 500]) to torch.Size([1, 371, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([480, 443]) to torch.Size([1, 480, 443])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([377, 500]) to torch.Size([1, 377, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([358, 269]) to torch.Size([1, 358, 269])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 374]) to torch.Size([1, 500, 374])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([331, 500]) to torch.Size([1, 331, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:48:02 - mmengine - INFO - Iter(test) [ 200/1464]    eta: 0:23:00  time: 1.1782  data_time: 0.0165  memory: 8883  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([400, 500]) to torch.Size([1, 400, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 400]) to torch.Size([1, 500, 400])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 496]) to torch.Size([1, 500, 496])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([469, 500]) to torch.Size([1, 469, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([283, 500]) to torch.Size([1, 283, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([305, 500]) to torch.Size([1, 305, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 378]) to torch.Size([1, 500, 378])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 345]) to torch.Size([1, 500, 345])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([288, 292]) to torch.Size([1, 288, 292])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([325, 450]) to torch.Size([1, 325, 450])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([282, 500]) to torch.Size([1, 282, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:48:51 - mmengine - INFO - Iter(test) [ 250/1464]    eta: 0:21:45  time: 0.9120  data_time: 0.0164  memory: 12049  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([367, 480]) to torch.Size([1, 367, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([240, 320]) to torch.Size([1, 240, 320])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([347, 500]) to torch.Size([1, 347, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:49:30 - mmengine - INFO - Iter(test) [ 300/1464]    eta: 0:19:48  time: 0.6104  data_time: 0.0163  memory: 12053  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([329, 500]) to torch.Size([1, 329, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([327, 500]) to torch.Size([1, 327, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([272, 480]) to torch.Size([1, 272, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 376]) to torch.Size([1, 500, 376])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([308, 500]) to torch.Size([1, 308, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 494]) to torch.Size([1, 500, 494])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([225, 300]) to torch.Size([1, 225, 300])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([267, 400]) to torch.Size([1, 267, 400])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([335, 447]) to torch.Size([1, 335, 447])
+  warnings.warn('The shape of value will convert from '
+01/18 11:50:08 - mmengine - INFO - Iter(test) [ 350/1464]    eta: 0:18:20  time: 0.9309  data_time: 0.0156  memory: 8026  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([490, 500]) to torch.Size([1, 490, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([318, 500]) to torch.Size([1, 318, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 412]) to torch.Size([1, 500, 412])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([483, 500]) to torch.Size([1, 483, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([286, 500]) to torch.Size([1, 286, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([278, 500]) to torch.Size([1, 278, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([426, 320]) to torch.Size([1, 426, 320])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 321]) to torch.Size([1, 500, 321])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([325, 500]) to torch.Size([1, 325, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([338, 500]) to torch.Size([1, 338, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([237, 500]) to torch.Size([1, 237, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([440, 500]) to torch.Size([1, 440, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([357, 500]) to torch.Size([1, 357, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([413, 500]) to torch.Size([1, 413, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:51:09 - mmengine - INFO - Iter(test) [ 400/1464]    eta: 0:17:58  time: 0.7429  data_time: 0.0166  memory: 12056  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([298, 425]) to torch.Size([1, 298, 425])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([288, 498]) to torch.Size([1, 288, 498])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([241, 500]) to torch.Size([1, 241, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([379, 500]) to torch.Size([1, 379, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 379]) to torch.Size([1, 500, 379])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([321, 500]) to torch.Size([1, 321, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([376, 500]) to torch.Size([1, 376, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 443]) to torch.Size([1, 500, 443])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([260, 500]) to torch.Size([1, 260, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([419, 500]) to torch.Size([1, 419, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([300, 400]) to torch.Size([1, 300, 400])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 326]) to torch.Size([1, 500, 326])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([401, 500]) to torch.Size([1, 401, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:52:00 - mmengine - INFO - Iter(test) [ 450/1464]    eta: 0:17:10  time: 0.9309  data_time: 0.0184  memory: 12041  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 435]) to torch.Size([1, 500, 435])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 493]) to torch.Size([1, 500, 493])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 421]) to torch.Size([1, 500, 421])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 460]) to torch.Size([1, 500, 460])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 328]) to torch.Size([1, 500, 328])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([291, 500]) to torch.Size([1, 291, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([337, 500]) to torch.Size([1, 337, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([230, 500]) to torch.Size([1, 230, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:52:47 - mmengine - INFO - Iter(test) [ 500/1464]    eta: 0:16:11  time: 1.1596  data_time: 0.0164  memory: 12032  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 335]) to torch.Size([1, 500, 335])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([218, 500]) to torch.Size([1, 218, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([399, 500]) to torch.Size([1, 399, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([322, 500]) to torch.Size([1, 322, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([392, 500]) to torch.Size([1, 392, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([354, 500]) to torch.Size([1, 354, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 497]) to torch.Size([1, 500, 497])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([274, 500]) to torch.Size([1, 274, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([208, 360]) to torch.Size([1, 208, 360])
+  warnings.warn('The shape of value will convert from '
+01/18 11:53:27 - mmengine - INFO - Iter(test) [ 550/1464]    eta: 0:15:04  time: 0.7108  data_time: 0.0177  memory: 8883  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([384, 500]) to torch.Size([1, 384, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([473, 500]) to torch.Size([1, 473, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([303, 500]) to torch.Size([1, 303, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 303]) to torch.Size([1, 500, 303])
+  warnings.warn('The shape of value will convert from '
+01/18 11:54:08 - mmengine - INFO - Iter(test) [ 600/1464]    eta: 0:14:01  time: 0.8065  data_time: 0.0179  memory: 9014  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 426]) to torch.Size([1, 500, 426])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([309, 500]) to torch.Size([1, 309, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([432, 324]) to torch.Size([1, 432, 324])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([482, 500]) to torch.Size([1, 482, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([326, 500]) to torch.Size([1, 326, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 371]) to torch.Size([1, 500, 371])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([408, 500]) to torch.Size([1, 408, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 380]) to torch.Size([1, 500, 380])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([273, 500]) to torch.Size([1, 273, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:54:51 - mmengine - INFO - Iter(test) [ 650/1464]    eta: 0:13:06  time: 0.8110  data_time: 0.0167  memory: 8986  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([240, 360]) to torch.Size([1, 240, 360])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([344, 500]) to torch.Size([1, 344, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([202, 500]) to torch.Size([1, 202, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([383, 500]) to torch.Size([1, 383, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 356]) to torch.Size([1, 500, 356])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([499, 500]) to torch.Size([1, 499, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:55:27 - mmengine - INFO - Iter(test) [ 700/1464]    eta: 0:12:04  time: 0.8017  data_time: 0.0203  memory: 8882  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([393, 500]) to torch.Size([1, 393, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 331]) to torch.Size([1, 500, 331])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 438]) to torch.Size([1, 500, 438])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([385, 500]) to torch.Size([1, 385, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 408]) to torch.Size([1, 500, 408])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([486, 500]) to torch.Size([1, 486, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([339, 500]) to torch.Size([1, 339, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([442, 500]) to torch.Size([1, 442, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:56:11 - mmengine - INFO - Iter(test) [ 750/1464]    eta: 0:11:14  time: 0.8740  data_time: 0.0190  memory: 9022  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([112, 500]) to torch.Size([1, 112, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 359]) to torch.Size([1, 500, 359])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([329, 454]) to torch.Size([1, 329, 454])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 365]) to torch.Size([1, 500, 365])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([299, 448]) to torch.Size([1, 299, 448])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([292, 500]) to torch.Size([1, 292, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([313, 500]) to torch.Size([1, 313, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([387, 500]) to torch.Size([1, 387, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 388]) to torch.Size([1, 500, 388])
+  warnings.warn('The shape of value will convert from '
+01/18 11:56:56 - mmengine - INFO - Iter(test) [ 800/1464]    eta: 0:10:24  time: 0.7314  data_time: 0.0176  memory: 12023  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([341, 500]) to torch.Size([1, 341, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([457, 500]) to torch.Size([1, 457, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([306, 460]) to torch.Size([1, 306, 460])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([435, 500]) to torch.Size([1, 435, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([270, 360]) to torch.Size([1, 270, 360])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([488, 500]) to torch.Size([1, 488, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([414, 500]) to torch.Size([1, 414, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:57:38 - mmengine - INFO - Iter(test) [ 850/1464]    eta: 0:09:34  time: 0.9017  data_time: 0.0183  memory: 8992  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 355]) to torch.Size([1, 500, 355])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 362]) to torch.Size([1, 500, 362])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 330]) to torch.Size([1, 500, 330])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([372, 500]) to torch.Size([1, 372, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([239, 500]) to torch.Size([1, 239, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 11:58:14 - mmengine - INFO - Iter(test) [ 900/1464]    eta: 0:08:40  time: 0.7174  data_time: 0.0177  memory: 8948  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([350, 500]) to torch.Size([1, 350, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([336, 448]) to torch.Size([1, 336, 448])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 399]) to torch.Size([1, 500, 399])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([175, 500]) to torch.Size([1, 175, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 338]) to torch.Size([1, 500, 338])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 485]) to torch.Size([1, 500, 485])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([198, 257]) to torch.Size([1, 198, 257])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([323, 500]) to torch.Size([1, 323, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([380, 355]) to torch.Size([1, 380, 355])
+  warnings.warn('The shape of value will convert from '
+01/18 11:58:58 - mmengine - INFO - Iter(test) [ 950/1464]    eta: 0:07:53  time: 0.7831  data_time: 0.0165  memory: 9022  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 383]) to torch.Size([1, 500, 383])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([430, 500]) to torch.Size([1, 430, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 469]) to torch.Size([1, 500, 469])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([389, 500]) to torch.Size([1, 389, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([269, 500]) to torch.Size([1, 269, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([405, 500]) to torch.Size([1, 405, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([424, 500]) to torch.Size([1, 424, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([478, 478]) to torch.Size([1, 478, 478])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 346]) to torch.Size([1, 500, 346])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([320, 480]) to torch.Size([1, 320, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([346, 500]) to torch.Size([1, 346, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([351, 468]) to torch.Size([1, 351, 468])
+  warnings.warn('The shape of value will convert from '
+01/18 11:59:52 - mmengine - INFO - Iter(test) [1000/1464]    eta: 0:07:10  time: 0.7807  data_time: 0.0163  memory: 12096  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([302, 500]) to torch.Size([1, 302, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([360, 500]) to torch.Size([1, 360, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 12:00:24 - mmengine - INFO - Iter(test) [1050/1464]    eta: 0:06:19  time: 0.6410  data_time: 0.0164  memory: 5933  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([300, 500]) to torch.Size([1, 300, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([268, 500]) to torch.Size([1, 268, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([458, 500]) to torch.Size([1, 458, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([428, 480]) to torch.Size([1, 428, 480])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([496, 372]) to torch.Size([1, 496, 372])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 423]) to torch.Size([1, 500, 423])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 463]) to torch.Size([1, 500, 463])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([213, 500]) to torch.Size([1, 213, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([362, 500]) to torch.Size([1, 362, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 12:01:12 - mmengine - INFO - Iter(test) [1100/1464]    eta: 0:05:33  time: 1.5829  data_time: 0.0180  memory: 12016  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([317, 500]) to torch.Size([1, 317, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([428, 500]) to torch.Size([1, 428, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([368, 500]) to torch.Size([1, 368, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([403, 500]) to torch.Size([1, 403, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([353, 500]) to torch.Size([1, 353, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([288, 384]) to torch.Size([1, 288, 384])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([319, 500]) to torch.Size([1, 319, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 419]) to torch.Size([1, 500, 419])
+  warnings.warn('The shape of value will convert from '
+01/18 12:01:52 - mmengine - INFO - Iter(test) [1150/1464]    eta: 0:04:46  time: 1.0447  data_time: 0.0176  memory: 8989  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 368]) to torch.Size([1, 500, 368])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([391, 500]) to torch.Size([1, 391, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 364]) to torch.Size([1, 500, 364])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([443, 500]) to torch.Size([1, 443, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([338, 400]) to torch.Size([1, 338, 400])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([380, 500]) to torch.Size([1, 380, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([378, 500]) to torch.Size([1, 378, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 394]) to torch.Size([1, 500, 394])
+  warnings.warn('The shape of value will convert from '
+01/18 12:02:32 - mmengine - INFO - Iter(test) [1200/1464]    eta: 0:03:59  time: 0.8162  data_time: 0.0177  memory: 7193  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([288, 352]) to torch.Size([1, 288, 352])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([297, 448]) to torch.Size([1, 297, 448])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([312, 500]) to torch.Size([1, 312, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([460, 500]) to torch.Size([1, 460, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([466, 500]) to torch.Size([1, 466, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 12:03:09 - mmengine - INFO - Iter(test) [1250/1464]    eta: 0:03:12  time: 0.6398  data_time: 0.0188  memory: 7543  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([386, 500]) to torch.Size([1, 386, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 377]) to torch.Size([1, 500, 377])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([297, 500]) to torch.Size([1, 297, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 404]) to torch.Size([1, 500, 404])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([263, 350]) to torch.Size([1, 263, 350])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([338, 450]) to torch.Size([1, 338, 450])
+  warnings.warn('The shape of value will convert from '
+01/18 12:03:50 - mmengine - INFO - Iter(test) [1300/1464]    eta: 0:02:27  time: 0.6133  data_time: 0.0163  memory: 8973  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 401]) to torch.Size([1, 500, 401])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([381, 500]) to torch.Size([1, 381, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 389]) to torch.Size([1, 500, 389])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 396]) to torch.Size([1, 500, 396])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([480, 333]) to torch.Size([1, 480, 333])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 420]) to torch.Size([1, 500, 420])
+  warnings.warn('The shape of value will convert from '
+01/18 12:04:29 - mmengine - INFO - Iter(test) [1350/1464]    eta: 0:01:41  time: 0.9270  data_time: 0.0238  memory: 8971  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([390, 500]) to torch.Size([1, 390, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([352, 500]) to torch.Size([1, 352, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([471, 500]) to torch.Size([1, 471, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([326, 246]) to torch.Size([1, 326, 246])
+  warnings.warn('The shape of value will convert from '
+01/18 12:05:05 - mmengine - INFO - Iter(test) [1400/1464]    eta: 0:00:56  time: 0.6107  data_time: 0.0180  memory: 9013  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 466]) to torch.Size([1, 500, 466])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 339]) to torch.Size([1, 500, 339])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 405]) to torch.Size([1, 500, 405])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 316]) to torch.Size([1, 500, 316])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([290, 500]) to torch.Size([1, 290, 500])
+  warnings.warn('The shape of value will convert from '
+01/18 12:05:42 - mmengine - INFO - Iter(test) [1450/1464]    eta: 0:00:12  time: 0.6122  data_time: 0.0163  memory: 8888  
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([355, 500]) to torch.Size([1, 355, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([367, 500]) to torch.Size([1, 367, 500])
+  warnings.warn('The shape of value will convert from '
+/media/ders/mazhiming/mmseg4wsss/mmsegmentation/mmengine_custom/mmengine/structures/pixel_data.py:83: UserWarning: The shape of value will convert from torch.Size([500, 322]) to torch.Size([1, 500, 322])
+  warnings.warn('The shape of value will convert from '
+01/18 12:05:52 - mmengine - INFO - per class results:
+01/18 12:05:52 - mmengine - INFO - 
++-------------+-------+-------+
+|    Class    |  IoU  |  Acc  |
++-------------+-------+-------+
+|  background | 89.68 | 93.44 |
+|  aeroplane  | 82.88 |  95.9 |
+|   bicycle   | 46.81 | 91.29 |
+|     bird    | 71.97 | 97.65 |
+|     boat    | 70.61 | 86.56 |
+|    bottle   | 63.01 | 95.05 |
+|     bus     | 81.32 | 91.14 |
+|     car     |  78.9 | 90.44 |
+|     cat     | 88.49 | 97.39 |
+|    chair    | 33.95 | 42.09 |
+|     cow     | 74.44 | 92.36 |
+| diningtable | 48.35 | 53.79 |
+|     dog     |  87.1 | 96.66 |
+|    horse    | 83.96 | 97.18 |
+|  motorbike  | 74.28 | 95.59 |
+|    person   | 77.39 | 85.61 |
+| pottedplant | 51.51 | 83.83 |
+|    sheep    | 59.96 | 97.73 |
+|     sofa    | 42.54 | 48.39 |
+|    train    | 77.92 | 89.35 |
+|  tvmonitor  | 57.28 | 88.95 |
++-------------+-------+-------+
+01/18 12:05:52 - mmengine - INFO - Iter(test) [1464/1464]    aAcc: 91.2900  mIoU: 68.6800  mAcc: 86.2100  data_time: 0.0292  time: 0.8804

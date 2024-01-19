@@ -237,7 +237,7 @@ def wsss_cross_entropy(pred,
 
     pred_cam = F.avg_pool2d(cam, kernel_size=(h, w), padding=0)
     pred_cam = pred_cam.view(pred_cam.size(0), -1)
-    return F.multilabel_soft_margin_loss(pred_cam[:,1:], label[:,1:])
+    return F.multilabel_soft_margin_loss(pred_cam[:,:-1], label[:,1:])
 
 
 @MODELS.register_module()
