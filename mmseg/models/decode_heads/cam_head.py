@@ -53,7 +53,8 @@ class CAMHead(BaseDecodeHead_wsss):
         if isinstance(inputs, list):
             x = inputs[-1]#取最后一层4096
         else:
-            raise TypeError('inputs must be a list of Tensor')
+            x = inputs[-1]
+            # raise TypeError('inputs must be a list of Tensor')
         feats = self.conv_seg(x)
   
         return feats
@@ -79,6 +80,12 @@ class CAMHead(BaseDecodeHead_wsss):
             data_sample.sal_map.data for data_sample in batch_data_samples
         ]
         return torch.stack(gt_sal_maps, dim=0)
+    
+    def _stack_batch_depth(self, batch_data_samples: SampleList) -> Tensor:
+        gt_depth_maps = [
+            data_sample.gt_depth_map.data for data_sample in batch_data_samples
+        ]
+        return torch.stack(gt_depth_maps, dim=0)
 
     def loss_by_feat(self, seg_logits: Tensor,
                      batch_data_samples: SampleList) -> dict:
@@ -95,6 +102,7 @@ class CAMHead(BaseDecodeHead_wsss):
         """
         seg_label = self._stack_batch_gt(batch_data_samples)
         sal_map = self._stack_batch_sal(batch_data_samples)
+        depth_map = self._stack_batch_depth(batch_data_samples)
         # seg_label=torch.stack(batch_data_samples, dim=0)
         # sal_map=torch.stack(batch_data_samples, dim=0)
         loss = dict()
@@ -119,7 +127,7 @@ class CAMHead(BaseDecodeHead_wsss):
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logits,
-                    [seg_label,sal_map,cam],
+                    [seg_label,sal_map,cam,depth_map],
                     weight=seg_weight,
                     ignore_index=self.ignore_index)
             else:

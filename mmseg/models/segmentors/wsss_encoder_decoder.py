@@ -127,8 +127,7 @@ class WSSSEncoderDecoder(BaseSegmentor):
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(inputs)
-        seg_logits = self.decode_head.predict(x, batch_img_metas,
-                                              )
+        seg_logits = self.decode_head.predict(x, batch_img_metas)
 
         return seg_logits
 

@@ -9,6 +9,70 @@ from mmseg.registry import MODELS
 from .utils import get_class_weight, weight_reduce_loss
 
 import pdb
+from .utils import weighted_loss
+
+def eps_lossfn(cam, saliency, num_classes, label, tau, lam, intermediate=True):
+    """
+    Get EPS loss for pseudo-pixel supervision from saliency map.
+    Args:
+        cam (tensor): response from model with float values.
+        saliency (tensor): saliency map from off-the-shelf saliency model.
+        num_classes (int): the number of classes
+        label (tensor): label information.
+        tau (float): threshold for confidence area
+        lam (float): blending ratio between foreground map and background map
+        intermediate (bool): if True return all the intermediates, if not return only loss.
+    Shape:
+        cam (N, C, H', W') where N is the batch size and C is the number of classes.
+        saliency (N, 1, H, W)
+        label (N, C)
+    """
+    
+    b, c, h, w = cam.size()
+    # pdb.set_trace()
+    saliency = F.interpolate(saliency, size=(h, w))
+
+    label_map = label.view(b, num_classes, 1, 1).expand(size=(b, num_classes, h, w)).bool()
+
+    # Map selection
+    label_map_fg = torch.zeros(size=(b, num_classes+1, h, w)).bool().cuda()
+    label_map_bg = torch.zeros(size=(b, num_classes+1, h, w)).bool().cuda()
+
+    label_map_bg[:, num_classes] = True
+    label_map_fg[:, :-1] = label_map.clone()
+
+    sal_pred = F.softmax(cam, dim=1)
+#交集/显著性图（这会保留大面积占比的目标）（获取前景与显著性图交集>tau的类别）
+    # pdb.set_trace()
+    iou_saliency = (torch.round(sal_pred[:, :-1].detach()) * torch.round(saliency)).view(b, num_classes, -1).sum(-1) / \
+                   (torch.round(sal_pred[:, :-1].detach()) + 1e-04).view(b, num_classes, -1).sum(-1)
+#阈值化得到
+    valid_channel = (iou_saliency > tau).view(b, num_classes, 1, 1).expand(size=(b, num_classes, h, w))
+#大面积前景使用label剔除无关类
+    label_fg_valid = label_map & valid_channel
+
+    label_map_fg[:, :-1] = label_fg_valid
+    label_map_bg[:, :-1] = label_map & (~valid_channel)
+
+    # Saliency loss
+    fg_map = torch.zeros_like(sal_pred).cuda()
+    bg_map = torch.zeros_like(sal_pred).cuda()
+#这里只是显著性图能够提供的前景应该是怎么样，需要使用local_sp去激活非显著区域
+    fg_map[label_map_fg] = sal_pred[label_map_fg]#保留了前景各通道的信息
+    bg_map[label_map_bg] = sal_pred[label_map_bg]
+
+    fg_map_ = torch.sum(fg_map, dim=1, keepdim=True)
+    bg_map = torch.sum(bg_map, dim=1, keepdim=True)
+
+    bg_map = torch.sub(1, bg_map)
+    sal_pred = fg_map_ * lam + bg_map * (1 - lam)
+
+    loss = F.mse_loss(sal_pred, saliency)
+
+    if intermediate:
+        return loss, fg_map, bg_map, sal_pred
+    else:
+        return loss
 
 
 def cross_entropy(pred,
@@ -162,7 +226,6 @@ def binary_cross_entropy(pred,
 
     loss = F.binary_cross_entropy_with_logits(
         pred, label.float(), pos_weight=class_weight, reduction='none')
-    pdb.set_trace()
     # do the reduction for the weighted loss
     loss = weight_reduce_loss(
         loss, weight, reduction=reduction, avg_factor=avg_factor)
@@ -220,28 +283,65 @@ def wsss_cross_entropy(pred,
     """
     Calculate the binary CrossEntropy loss.
     """
-    # pdb.set_trace()
-    cam=label[2]
-    label=label[0]
-    
+    #
     label, weight, valid_mask = _expand_onehot_labels(
             label, weight, pred.shape, ignore_index)
-    # pdb.set_trace()
-    b,c,h,w=cam.size()
 
-    # pdb.set_trace()
+    b,c,h,w=pred.size()
+    pred = F.avg_pool2d(pred, kernel_size=(h, w), padding=0)
+
     label = torch.sum(label.view(b, c, -1),dim=-1)
-    label[label>0]=1
-    label=label.float()
+    label = torch.where(label>0,torch.ones_like(label),torch.zeros_like(label)).unsqueeze(-1).unsqueeze(-1)
+
+    return F.multilabel_soft_margin_loss(pred, label)
+
+
+def depth_loss(pred,
+                    target,
+                    weight=None,
+                    reduction='mean',
+                    avg_factor=None,
+                    class_weight=None,
+                    ignore_index=-100,
+                    avg_non_ignore=False,
+                    **kwargs):
+    """
+    Calculate the binary CrossEntropy loss.
+    """
+    #
+    label=target[0]
+    sal=target[1]
     # pdb.set_trace()
+    # sal=torch.mean(sal,dim=1,keepdim=True)
+    pred_=target[2]
+    depth_map=target[3]
+    # b,c,h,w=pred.size()
+    # pdb.set_trace()
+    # label, weight, valid_mask = _expand_onehot_labels(
+    #         label, weight, pred.shape, ignore_index)
+    # # pdb.set_trace()
+    # # b,c,h,w=pred_.size()
+    # # pred_ = F.avg_pool2d(pred_, kernel_size=(h, w), padding=0)
+    
+    # b,c,h,w=pred.size()
+    # label = torch.sum(label.view(b, c, -1),dim=-1)
+    # label[label>0]=1.
+    # label=label.float()
+    # # label = label.unsqueeze(-1).unsqueeze(-1)
+    # # pdb.set_trace()
+    # # pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
+    # eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
+    #                     0.4, 0.5, intermediate=False)
+    
+    # pred=torch.roll(pred, shifts=-1, dims=0)
 
-    pred_cam = F.avg_pool2d(cam, kernel_size=(h, w), padding=0)
-    pred_cam = pred_cam.view(pred_cam.size(0), -1)
-    return F.multilabel_soft_margin_loss(pred_cam[:,:-1], label[:,1:])
+    depth_loss=torch.tensor(0.).cuda()
 
+
+    return depth_loss
 
 @MODELS.register_module()
-class CrossEntropyLoss(nn.Module):
+class DepthLoss(nn.Module):
     """CrossEntropyLoss.
 
     Args:
@@ -268,8 +368,10 @@ class CrossEntropyLoss(nn.Module):
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
-                 loss_name='loss_ce',
+                 loss_name='loss_depth',
                  wsss=False,
+                 eps_wsss=False,
+                 depth=False,
                  avg_non_ignore=False):
         super().__init__()
         assert (use_sigmoid is False) or (use_mask is False)
@@ -278,6 +380,8 @@ class CrossEntropyLoss(nn.Module):
         self.wsss = wsss
         self.reduction = reduction
         self.loss_weight = loss_weight
+        self.eps_wsss = eps_wsss
+        self.depth = depth
         self.class_weight = get_class_weight(class_weight)
         self.avg_non_ignore = avg_non_ignore
         if not self.avg_non_ignore and self.reduction == 'mean':
@@ -293,8 +397,13 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = mask_cross_entropy
         elif self.wsss:
             self.cls_criterion = wsss_cross_entropy
+        elif self.eps_wsss:
+            self.cls_criterion = eps_wsss_loss
+        elif self.depth:
+            self.cls_criterion = depth_loss
         else:
             self.cls_criterion = cross_entropy
+        
         self._loss_name = loss_name
 
     def extra_repr(self):

@@ -627,10 +627,13 @@ class BaseSegDataset_SAL(BaseDataset):
                  img_suffix='.jpg',
                  seg_map_suffix='.png',
                  sal_suffix='.png',
+                 depth_suffix='.png',#dsh
+                 depth_root:Optional[str] = None,#dsh
                  metainfo: Optional[dict] = None,
                  data_root: Optional[str] = None,
                  sal_root: Optional[str] = None,#显著性图像的根目录
-                 data_prefix: dict = dict(img_path='', seg_map_path='', sal_path=''),
+                 #data_prefix: dict = dict(img_path='', seg_map_path='', sal_path=''),原版
+                 data_prefix: dict = dict(img_path='', seg_map_path='', sal_path='', depth_map_path=''),#dsh
                  filter_cfg: Optional[dict] = None,
                  indices: Optional[Union[int, Sequence[int]]] = None,
                  serialize_data: bool = True,
@@ -645,6 +648,7 @@ class BaseSegDataset_SAL(BaseDataset):
         self.img_suffix = img_suffix
         self.seg_map_suffix = seg_map_suffix
         self.sal_suffix = sal_suffix
+        self.depth_suffix = depth_suffix#dsh
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
         self.backend_args = backend_args.copy() if backend_args else None
@@ -654,6 +658,9 @@ class BaseSegDataset_SAL(BaseDataset):
         
         self.sal_root = sal_root
         self.data_prefix = copy.copy(data_prefix)
+        
+        self.depth_root = depth_root#dsh
+        self.data_prefix = copy.copy(data_prefix)#dsh
 
         self.ann_file = ann_file
         self.filter_cfg = copy.deepcopy(filter_cfg)
@@ -786,6 +793,7 @@ class BaseSegDataset_SAL(BaseDataset):
         ann_dir = self.data_prefix.get('seg_map_path', None)
 
         sal_dir = self.data_prefix.get('sal_path', None)
+        depth_dir = self.data_prefix.get('depth_map_path', None)#dsh
 
         if not osp.isdir(self.ann_file) and self.ann_file:
             assert osp.isfile(self.ann_file), \
@@ -802,10 +810,14 @@ class BaseSegDataset_SAL(BaseDataset):
                 if sal_dir is not None:
                     sal_map = img_name + self.sal_suffix
                     data_info['sal_path'] = osp.join(sal_dir, sal_map)
+                if depth_dir is not None:#dsh
+                    depth_map = img_name + self.depth_suffix#dsh
+                    data_info['depth_map_path'] = osp.join(depth_dir, depth_map)#dsh
                 data_info['label_map'] = self.label_map
                 data_info['reduce_zero_label'] = self.reduce_zero_label
                 data_info['seg_fields'] = []
-                data_info['sal_fields'] = []
+                # data_info['sal_fields'] = []
+                # data_info['depth_fields'] = []#dsh
                 data_list.append(data_info)
         else:
             _suffix_len = len(self.img_suffix)
@@ -822,10 +834,14 @@ class BaseSegDataset_SAL(BaseDataset):
                 if sal_dir is not None:
                     sal_map = img[:-_suffix_len] + self.sal_suffix
                     data_info['sal_path'] = osp.join(sal_dir, sal_map)
+                if depth_dir is not None:#dsh
+                    depth_map = img[:-_suffix_len] + self.depth_suffix#dsh
+                    data_info['depth_map_path'] = osp.join(depth_dir, depth_map)#dsh
                 data_info['label_map'] = self.label_map
                 data_info['reduce_zero_label'] = self.reduce_zero_label
                 data_info['seg_fields'] = []
-                data_info['sal_fields'] = []
+                # data_info['sal_fields'] = []
+                # data_info['depth_fields'] = []#dsh
                 data_list.append(data_info)
             data_list = sorted(data_list, key=lambda x: x['img_path'])
         return data_list

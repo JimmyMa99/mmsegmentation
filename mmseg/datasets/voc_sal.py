@@ -31,6 +31,7 @@ class PascalVOCDataset_Sal(BaseSegDataset_SAL):
                  img_suffix='.jpg',
                  seg_map_suffix='.png',
                  sal_suffix='.png',
+                 depth_suffix='.png',#dsh
                  **kwargs) -> None:
         super().__init__(
             img_suffix=img_suffix,

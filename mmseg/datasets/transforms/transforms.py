@@ -299,6 +299,7 @@ class RandomCrop(BaseTransform):
             # Repeat 10 times
             for _ in range(10):
                 seg_temp = self.crop(results['gt_seg_map'], crop_bbox)
+                #seg_temp = self.crop(results['seg_map_path'], crop_bbox)#dsh
                 # print(results)
                 labels, cnt = np.unique(seg_temp, return_counts=True)
                 cnt = cnt[labels != self.ignore_index]

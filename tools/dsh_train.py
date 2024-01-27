@@ -13,10 +13,10 @@ from mmseg.registry import RUNNERS
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
-    parser.add_argument('config', help='train config file path')#原版
-    # parser.add_argument('--config',default='my_config/res50_eps_config.py',help='train config file path')#dsh,2024.1.25
-    parser.add_argument('--work-dir', help='the dir to save logs and models')#原版
-    # parser.add_argument('--work-dir', default='work_dirs/dsh_1.25',help='the dir to save logs and models')#dsh,2024.1.25
+    #parser.add_argument('config', help='train config file path')#原版
+    parser.add_argument('--config',default='/media/ders/mazhiming/mmseg4wsss/mmsegmentation/my_config/res50_eps_config_dsh_deepimage.py',help='train config file path')#dsh,2024.1.25
+    #parser.add_argument('--work-dir', help='the dir to save logs and models')#原版
+    parser.add_argument('--work-dir', default='work_dirs/dsh_1.25',help='the dir to save logs and models')#dsh,2024.1.25
     parser.add_argument(
         '--resume',
         action='store_true',

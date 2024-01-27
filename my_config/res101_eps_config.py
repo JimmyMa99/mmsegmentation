@@ -39,14 +39,12 @@ launcher = 'none'
 load_from = None
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
-model = dict(
-    data_preprocessor=data_preprocessor,
-    backbone=dict(type='WideRes38'),
-    decode_head=dict(
+
+decode_head=dict(
         align_corners=False,
-        channels=4096,
+        channels=2048,
         # dropout_ratio=0.1,
-        in_channels=4096,
+        in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
                         dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
@@ -58,10 +56,38 @@ model = dict(
             3,
             1,#56*56->4096channels
         ),
-        type='CAMHead'),
-    pretrained='data/models/res38d_mxnet.pth',
-    test_cfg=dict(mode='whole'),
+        type='CAMHead')
+model = dict(data_preprocessor=data_preprocessor,pretrained='open-mmlab://resnet101_v1c',
+        backbone=dict(
+        contract_dilation=True,
+        depth=101,
+        dilations=(
+            1,
+            1,
+            2,
+            4,
+        ),
+        norm_cfg=dict(requires_grad=True, type='SyncBN'),
+        norm_eval=False,
+        num_stages=4,
+        out_indices=(
+            0,
+            1,
+            2,
+            3,
+        ),
+        strides=(
+            1,
+            2,
+            1,
+            1,
+        ),
+        style='pytorch',
+        type='ResNetV1c'),
+        decode_head=decode_head,
+        test_cfg=dict(mode='whole'),
     type='WSSSEncoderDecoder')
+
 # norm_cfg = dict(requires_grad=True, type='SyncBN')
 
 optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005,)
@@ -107,7 +133,7 @@ test_pipeline = [
     dict(type='PackSegInputs'),
 ]
 
-train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=2000)
+train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
@@ -199,4 +225,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res38_roll'
+work_dir = 'work_dirs/wsss_voc12_res101_roll'

@@ -313,7 +313,7 @@ def eps_wsss_loss(pred,
     sal=target[1]
     # pdb.set_trace()
     # sal=torch.mean(sal,dim=1,keepdim=True)
-    pred_=target[-1]
+    pred_=target[2]
     # b,c,h,w=pred.size()
     # pdb.set_trace()
     label, weight, valid_mask = _expand_onehot_labels(

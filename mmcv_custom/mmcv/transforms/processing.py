@@ -239,6 +239,23 @@ class Resize(BaseTransform):
                     backend=self.backend)
             results['sal_map'] = sal
 
+    def _resize_depth(self, results: dict) -> None:
+        """Resize semantic segmentation map with ``results['scale']``."""
+        if results.get('gt_depth_map', None) is not None:
+            if self.keep_ratio:
+                depth_map = mmcv.imrescale(
+                    results['gt_depth_map'],
+                    results['scale'],
+                    interpolation='nearest',
+                    backend=self.backend)
+            else:
+                depth_map = mmcv.imresize(
+                    results['gt_depth_map'],
+                    results['scale'],
+                    interpolation='nearest',
+                    backend=self.backend)
+            results['gt_depth_map'] = depth_map
+
     def _resize_keypoints(self, results: dict) -> None:
         """Resize keypoints with ``results['scale_factor']``."""
         if results.get('gt_keypoints', None) is not None:
@@ -276,6 +293,8 @@ class Resize(BaseTransform):
         self._resize_seg(results)
         self._resize_keypoints(results)
         self._resize_sal(results)
+        self._resize_depth(results)
+
         return results
 
     def __repr__(self):

@@ -95,16 +95,24 @@ class PackSegInputs(BaseTransform):
                                                       ...].astype(np.int64)))
             data_sample.set_data(dict(gt_edge_map=PixelData(**gt_edge_data)))
         if 'gt_depth_map' in results:
+            # pdb.set_trace()
+            #针对读进来是3通道情况
+            if len(results['gt_depth_map'].shape) == 3:
+                results['gt_depth_map']=np.mean(results['gt_depth_map'],axis=-1)
+            
             gt_depth_data = dict(
                 data=to_tensor(results['gt_depth_map'][None, ...]))
+            # pdb.set_trace()
             data_sample.set_data(dict(gt_depth_map=PixelData(**gt_depth_data)))
         # 
         # print('sal_map' in results)
         #for sal
         if 'sal_map' in results:
+            # pdb.set_trace()
             sal_map_data = dict(
                 data=to_tensor(results['sal_map'][None,
                                                       ...].astype(np.float32)))
+            # pdb.set_trace()
             data_sample.set_data(dict(sal_map=PixelData(**sal_map_data)))
 
         img_meta = {}

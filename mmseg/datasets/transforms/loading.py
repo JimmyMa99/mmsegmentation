@@ -822,13 +822,21 @@ class LoadDepthAnnotation(BaseTransform):
         Returns:
             dict: The dict contains loaded depth map.
         """
-        data_bytes = fileio.get(results['depth_map_path'], self.backend_args)
+        data_bytes = fileio.get(results['depth_map_path'], self.backend_args)#原版
+        # data_bytes = fileio.get(results['depth_path'], self.backend_args)#dsh
+        # data_bytes_tgt = fileio.get(results['seg_map_path'], self.backend_args)#dsh
         gt_depth_map = datafrombytes(data_bytes, backend=self.decode_backend)
+        # gt_seg_map = datafrombytes(data_bytes_tgt, backend=self.decode_backend)#dsh
 
         if self.to_float32:
             gt_depth_map = gt_depth_map.astype(np.float32)
+            
+        # if self.to_float32:#dsh
+        #     gt_seg_map = gt_seg_map.astype(np.float32)#dsh
 
         gt_depth_map *= self.depth_rescale_factor
+        # gt_seg_map *= self.depth_rescale_factor#dsh,保持和深度图一样的处理了
+        # results['gt_seg_map'] = gt_seg_map
         results['gt_depth_map'] = gt_depth_map
         results['seg_fields'].append('gt_depth_map')
         results['depth_rescale_factor'] = self.depth_rescale_factor
