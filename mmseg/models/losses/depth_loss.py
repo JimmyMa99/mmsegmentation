@@ -7,6 +7,7 @@ import torch.nn.functional as F
 
 from mmseg.registry import MODELS
 from .utils import get_class_weight, weight_reduce_loss
+import numpy as np
 
 import pdb
 from .utils import weighted_loss
@@ -313,33 +314,175 @@ def depth_loss(pred,
     sal=target[1]
     # pdb.set_trace()
     # sal=torch.mean(sal,dim=1,keepdim=True)
-    pred_=target[2]
-    depth_map=target[3]
-    # b,c,h,w=pred.size()
+    cam=target[2]
+    depth_maps=target[3]
+    
+    #save for exp
+    # np.save('save_npy/label.npy',label.cpu().detach().numpy())
+    # np.save('save_npy/sal.npy',sal.cpu().detach().numpy())
+    # np.save('save_npy/cam.npy',cam.cpu().detach().numpy())
+    # np.save('save_npy/depth_maps.npy',depth_maps.cpu().detach().numpy())
     # pdb.set_trace()
-    # label, weight, valid_mask = _expand_onehot_labels(
-    #         label, weight, pred.shape, ignore_index)
-    # # pdb.set_trace()
-    # # b,c,h,w=pred_.size()
-    # # pred_ = F.avg_pool2d(pred_, kernel_size=(h, w), padding=0)
-    
-    # b,c,h,w=pred.size()
-    # label = torch.sum(label.view(b, c, -1),dim=-1)
-    # label[label>0]=1.
-    # label=label.float()
-    # # label = label.unsqueeze(-1).unsqueeze(-1)
-    # # pdb.set_trace()
-    # # pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
-    # eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
-    #                     0.4, 0.5, intermediate=False)
-    
-    # pred=torch.roll(pred, shifts=-1, dims=0)
-
-    depth_loss=torch.tensor(0.).cuda()
 
 
+
+    label, weight, valid_mask = _expand_onehot_labels(
+            label, weight, pred.shape, ignore_index)
+    # pdb.set_trace()
+    b,c,h,w=cam.size()
+
+    # pdb.set_trace()
+    label = torch.sum(label.view(b, c, -1),dim=-1)
+    label[label>0]=1
+    label=label.float()
+
+    pse_cams=cam*label.unsqueeze(-1).unsqueeze(-1)
+    pse_cams=torch.sigmoid(pse_cams)
+    depth_tensor_list=[]
+    ############获取深度图的tensor################
+    for i in range(b):
+        depth_map=depth_maps[i,...]
+        depth_tensor=extra_depth_tensor(depth_map,8)
+        depth_tensor_list.append(depth_tensor)
+    Depth_t=torch.stack(depth_tensor_list,dim=0) #b,c,h,w
+
+    s_depth_t=F.interpolate(Depth_t,size=(h,w),mode='nearest')
+    #############################################
+    # pdb.set_trace()
+    sum_loss=0
+    thr=0.9
+    pse_masks=torch.zeros_like(pse_cams).cuda()
+    #############通过cam提取深度图可用的区域##############
+    for i in range(b):
+        for j in range(c):
+            if j==c-1:#background
+                continue
+            if label[i,j]==1:
+                depth_t=s_depth_t[i,...]
+                pse_cam=pse_cams[i,j,...]
+                # U_depth_acc=calculate_accuracy(pse_cam,depth_t,topk=1,thresh=0.01,ignore_index=-100)#返回一个tensor
+                # U_depth_acc=pixelwise_iou_loss(pse_cam,depth_t)
+                class_for=get_class_forground(pse_cam,depth_t,cam_thr=0.2,score_thr=0.8)
+                pse_masks[i,j,...]=class_for
+                #滤除
+                # U_depth_acc[U_depth_acc>thr]=0
+                # sum_loss+=torch.sum(U_depth_acc)
+    depth_loss=F.mse_loss(pse_masks[:,:-1,...], cam[:,:-1,...], reduction='mean')
+    # pdb.set_trace()
     return depth_loss
 
+
+    # depth_loss=torch.tensor(0.).cuda()
+
+    # return depth_loss
+
+def get_class_forground(cam, depth_t,cam_thr=0.2,score_thr=0.3):
+    """
+    cam只是一个类别的cam，depth_t是对应该图的所有的深度图切片
+
+    cam[h,w],depth_t[c,h,w]
+    
+    """
+    cam[cam>cam_thr]=1
+    cam[cam<=cam_thr]=0
+
+    classes_forgoundmap=torch.zeros_like(cam)
+
+    c,h,w=depth_t.shape
+    depth_t_i=depth_t.clone()
+    for i in range(c):
+        depth_t_i[i,...]=depth_t[i,...]*cam
+        sum_depth_i=torch.sum(depth_t_i[i,...])
+        score=sum_depth_i/torch.sum(depth_t[i,...])
+        if score>score_thr:
+            classes_forgoundmap+=depth_t[i,...]
+    
+    return classes_forgoundmap
+            
+
+
+
+
+
+    
+
+
+
+
+def pixelwise_iou_loss(pred_mask, true_mask):
+    """
+    计算像素级别的 IoU 损失
+
+    参数:
+
+
+    返回:
+    - loss: 像素级别的 IoU 损失
+    """
+    # pred_mask = F.sigmoid(pred_mask)  # 将预测掩码映射到 (0, 1) 之间
+    pred_mask=pred_mask.clone()
+    h,w=pred_mask.shape
+
+    true_mask=F.interpolate(true_mask.unsqueeze(0),size=(h,w),mode='nearest').squeeze(0)
+    c,_,_=true_mask.shape
+    loss=torch.tensor(0.).cuda()
+    for i in range(c):
+
+        intersection = torch.sum(pred_mask * true_mask[i,...])
+        union = torch.sum(pred_mask) + torch.sum(true_mask[i,...]) - intersection
+        # union = torch.sum(true_mask[i,...])
+        iou = (intersection + 1e-7) / (union + 1e-7)  # 加上小值避免除零错误
+        loss += 1 - iou  # IoU 损失
+
+    return loss
+
+
+def calculate_accuracy(pred, target, topk=1, thresh=None, ignore_index=-100):
+    #pred对应的是一个类别的cam，target对应的是所有的depth
+    #pred[h,w],target[c,h,w]
+    h,w=pred.shape
+    pred_sigmoid=pred.clone()
+    pred_sigmoid[pred_sigmoid>thresh]=1
+    pred_sigmoid[pred_sigmoid<=thresh]=0
+
+    s_target=F.interpolate(target.unsqueeze(0),size=(h,w),mode='nearest').squeeze(0)
+    # pdb.set_trace()
+    c,_,_=s_target.shape
+    acc_collection=[]
+    for i in range(c):
+        acc=torch.mean(pred_sigmoid*s_target[i,...].float())
+        acc_collection.append(acc)
+
+    return torch.stack(acc_collection,dim=0)
+
+
+def extra_depth_tensor(depth_map,channels=4):
+    depth_map/=255.0
+
+    min_depth=depth_map.min()
+    max_depth=depth_map.max()
+    depth_map[depth_map==max_depth]=-1
+    max_depth=depth_map.max()
+
+    # channels=4#可调
+    intervals=torch.linspace(min_depth,max_depth,channels)
+
+    # depth_tensor=torch.tensor(depth_map)
+    # depth_sigmoid=torch.sigmoid(depth_tensor)
+    new_tensor_list=[]
+    for i in range(channels-1):
+        new_tensor=depth_map
+        top=intervals[i+1]
+        buttom=intervals[i]
+        new_tensor[(new_tensor>=top)]=0
+        new_tensor[(new_tensor<buttom)]=0
+        new_tensor[(new_tensor<top)&(new_tensor>=buttom)]=0
+        new_tensor[new_tensor==-1]=0
+        
+        new_tensor_list.append(new_tensor.squeeze(0))
+
+    depth_tensor=torch.stack(new_tensor_list,dim=0)
+    return depth_tensor
 @MODELS.register_module()
 class DepthLoss(nn.Module):
     """CrossEntropyLoss.

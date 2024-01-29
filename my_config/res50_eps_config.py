@@ -36,7 +36,7 @@ img_ratios = [
     1.75,
 ]
 launcher = 'none'
-load_from = None
+load_from = 'work_dirs/wsss_voc12_res50_seed4depthloss/iter_20000.pth'
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
 
@@ -47,7 +47,7 @@ decode_head=dict(
         in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
+                        dict(loss_weight=0.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
                         dict(loss_weight=1.0, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
@@ -106,7 +106,7 @@ param_scheduler = [
     dict(
         begin=0,
         by_epoch=False,
-        end=26000,
+        end=20000,
         eta_min=0.0001,
         power=0.9,
         type='PolyLR'),
@@ -134,7 +134,7 @@ test_pipeline = [
     dict(type='PackSegInputs'),
 ]
 
-train_cfg = dict(max_iters=26000, type='IterBasedTrainLoop', val_interval=2000)
+train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
@@ -227,4 +227,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res101_roll'
+work_dir = 'work_dirs/wsss_voc12_res50_depthloss'
