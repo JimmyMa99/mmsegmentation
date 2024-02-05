@@ -296,6 +296,18 @@ def wsss_cross_entropy(pred,
 
     return F.multilabel_soft_margin_loss(pred, label)
 
+def compute_depth_gradient(depth_map):
+    # Use Sobel operator to compute gradients in x and y direction
+    sobel_x = torch.tensor([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=torch.float32).view(1, 1, 3, 3).to(depth_map.device)
+    sobel_y = torch.tensor([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=torch.float32).view(1, 1, 3, 3).to(depth_map.device)
+
+    grad_x = F.conv2d(depth_map, sobel_x, padding=1)
+    grad_y = F.conv2d(depth_map, sobel_y, padding=1)
+    
+    # Compute magnitude of gradients
+    grad_magnitude = torch.sqrt(grad_x ** 2 + grad_y ** 2)
+    return grad_magnitude
+    return depth_similarity
 
 def depth_loss(pred,
                     target,
@@ -325,21 +337,33 @@ def depth_loss(pred,
     # np.save('save_npy/depth_maps.npy',depth_maps.cpu().detach().numpy())
     # pdb.set_trace()
 #################GPT4设计的loss#####################
+    # Compute depth gradient
     batch_size, _, H, W = cam.shape
-    depth_maps = F.interpolate(depth_maps, size=(H, W), mode='bilinear', align_corners=False)  # Resize depth_maps to match CAM size
-
-    # Prepare for depth difference calculation
-    depth_maps = depth_maps.repeat(1, cam.shape[1], 1, 1)  # Repeat depth map for each class
-    depth_diff = torch.abs(depth_maps - depth_maps.roll(1, dims=2)) + torch.abs(depth_maps - depth_maps.roll(1, dims=3))  # Calculate depth difference with immediate neighbors
-
-    # Calculate class probability difference
-    cam_diff = torch.abs(cam - cam.roll(1, dims=2)) + torch.abs(cam - cam.roll(1, dims=3))
+    depth_maps = F.interpolate(depth_maps, size=(H, W), mode='bilinear', align_corners=False)
+    depth_gradient = compute_depth_gradient(depth_maps)
     
-    # Compute weights based on depth difference
-    weights = torch.exp(-alpha * depth_diff)
-
+    # Normalize depth gradient to [0, 1]
+    depth_gradient = (depth_gradient - depth_gradient.min()) / (depth_gradient.max() - depth_gradient.min())
+    
+    # Adjust CAM based on depth gradient
+    cam_adjusted = cam * (1 + alpha * depth_gradient)
+    
+    # Compute the consistency of CAM in neighboring pixels
+    cam_diff = torch.abs(cam_adjusted - cam_adjusted.roll(1, dims=2)) + \
+               torch.abs(cam_adjusted - cam_adjusted.roll(1, dims=3))
+    
+    # Consider depth difference while computing consistency loss
+    depth_diff = torch.abs(depth_maps - depth_maps.roll(1, dims=2)) + \
+                 torch.abs(depth_maps - depth_maps.roll(1, dims=3))
+    
+    # Normalize depth difference to [0, 1]
+    depth_diff = (depth_diff - depth_diff.min()) / (depth_diff.max() - depth_diff.min())
+    
     # Compute depth consistency loss
-    depth_loss = (weights * cam_diff).mean()
+    # Depth consistency loss is lower when neighboring pixels are similar in CAM and depth
+    depth_loss = (cam_diff * depth_diff).mean()
+    # depth_loss = F.mse_loss(cam_enhanced, label.view(b, num_classes, 1, 1).expand_as(cam).float())
+    
 #################GPT4设计的loss#####################
     # label, weight, valid_mask = _expand_onehot_labels(
     #         label, weight, pred.shape, ignore_index)
@@ -390,6 +414,83 @@ def depth_loss(pred,
     # depth_loss=torch.tensor(0.).cuda()
 
     # return depth_loss
+
+############GPT4设计的loss#####################
+def compute_gradient(tensor):
+    # Use Sobel operator to compute gradients in x and y direction
+    sobel_x = torch.tensor([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=torch.float32, device=tensor.device).view(1, 1, 3, 3)
+    sobel_y = torch.tensor([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], dtype=torch.float32, device=tensor.device).view(1, 1, 3, 3)
+
+    # Handle multiple channels (e.g. CAM might have multiple class channels)
+    if tensor.size(1) > 1:  # If input has more than one channel
+        sobel_x = sobel_x.repeat(tensor.size(1), 1, 1, 1)
+        sobel_y = sobel_y.repeat(tensor.size(1), 1, 1, 1)
+        grad_x = F.conv2d(tensor, sobel_x, padding=1, groups=tensor.size(1))
+        grad_y = F.conv2d(tensor, sobel_y, padding=1, groups=tensor.size(1))
+    else:
+        grad_x = F.conv2d(tensor, sobel_x, padding=1)
+        grad_y = F.conv2d(tensor, sobel_y, padding=1)
+    
+    # Compute magnitude of gradients
+    grad_magnitude = torch.sqrt(grad_x ** 2 + grad_y ** 2)
+    return grad_magnitude
+def preprocess_depth_map(depth_map, ignore_value=255):
+    # Set the ignore value (e.g., 255) to 0 or other value
+    depth_map_processed = depth_map.clone()
+    depth_map_processed[depth_map == ignore_value] = 0
+    return depth_map_processed
+
+def compute_gradient_consistency_loss(pred,
+                    target,
+                    weight=None,
+                    reduction='mean',
+                    avg_factor=None,
+                    class_weight=None,
+                    ignore_index=-100,
+                    avg_non_ignore=False,
+                    alpha=1.0,
+                    threshold=0.1,
+                    **kwargs):
+    label=target[0]
+    sal=target[1]
+    # pdb.set_trace()
+    # sal=torch.mean(sal,dim=1,keepdim=True)
+    cam=target[2]
+    depth_maps=target[3]
+    depth_maps = depth_maps.unsqueeze(1) if len(depth_maps.shape) == 3 else depth_maps
+    batch_size, _, H, W = cam.shape
+    depth_maps = F.interpolate(depth_maps, size=(H, W), mode='bilinear', align_corners=False)
+    depth_map_processed = preprocess_depth_map(depth_maps, ignore_value=255)
+    
+    # Compute the gradient of CAM for each channel
+    cam_gradient = compute_gradient(cam)
+    
+    # Sum gradients along the channel dimension (except the last channel) to get a "pseudo depth map" for foreground
+    pseudo_depth_map_foreground = cam_gradient[:, :-1, :, :].sum(dim=1, keepdim=True)
+    
+    # Use the last channel of CAM as "pseudo depth map" for background
+    pseudo_depth_map_background = cam_gradient[:, -1, :, :].unsqueeze(1)
+    
+    # Compute the gradient of the preprocessed depth map
+    depth_gradient = compute_gradient(depth_map_processed)
+    
+    # Normalize gradients to [0, 1]
+    pseudo_depth_map_foreground = (pseudo_depth_map_foreground - pseudo_depth_map_foreground.min()) / (pseudo_depth_map_foreground.max() - pseudo_depth_map_foreground.min())
+    pseudo_depth_map_background = (pseudo_depth_map_background - pseudo_depth_map_background.min()) / (pseudo_depth_map_background.max() - pseudo_depth_map_background.min())
+    depth_gradient = (depth_gradient - depth_gradient.min()) / (depth_gradient.max() - depth_gradient.min())
+    
+    # Compute gradient consistency loss separately for foreground and background
+    loss_foreground = F.mse_loss(pseudo_depth_map_foreground, depth_gradient)
+    loss_background = F.mse_loss(pseudo_depth_map_background, depth_gradient)
+    
+    # Combine foreground and background losses
+    loss = loss_foreground + loss_background
+    return loss
+############GPT4设计的loss#####################
+
+
+
+
 
 def get_class_forground(cam, depth_t,cam_thr=0.2,score_thr=0.3):
     """
@@ -499,7 +600,7 @@ def extra_depth_tensor(depth_map,channels=4):
     depth_tensor=torch.stack(new_tensor_list,dim=0)
     return depth_tensor
 @MODELS.register_module()
-class DepthLoss(nn.Module):
+class DepthLoss2(nn.Module):
     """CrossEntropyLoss.
 
     Args:
@@ -558,7 +659,7 @@ class DepthLoss(nn.Module):
         elif self.eps_wsss:
             self.cls_criterion = eps_wsss_loss
         elif self.depth:
-            self.cls_criterion = depth_loss
+            self.cls_criterion = compute_gradient_consistency_loss
         else:
             self.cls_criterion = cross_entropy
         

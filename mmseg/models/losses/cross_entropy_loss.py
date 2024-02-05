@@ -41,7 +41,7 @@ def cross_entropy(pred,
             only averaged over non-ignored targets. Default: False.
             `New in version 0.23.0.`
     """
-
+    # pdb.set_trace()
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
     loss = F.cross_entropy(
@@ -77,6 +77,36 @@ def cross_entropy(pred,
 
     return loss
 
+def depth_cross_entropy(pred,
+                  target,
+                  weight=None,
+                  class_weight=None,
+                  reduction='mean',
+                  avg_factor=None,
+                  ignore_index=255,
+                  avg_non_ignore=False):
+    
+    label=target[0]
+    sal=target[1]
+    
+    # sal=torch.mean(sal,dim=1,keepdim=True)
+    cam=target[2]
+    depth_maps=target[3]
+    # depth_maps[depth_maps==255]=0
+    # pdb.set_trace()
+    b,c,h,w=cam.size()
+    pred=F.sigmoid(cam)
+    S_depth_maps=F.interpolate(depth_maps/255, size=(h, w), mode='bilinear', align_corners=False)
+
+    loss = F.mse_loss(pred,S_depth_maps)
+
+    # apply weights and do the reduction
+    # average loss over non-ignored elements
+    # pytorch's official cross_entropy average loss over non-ignored elements
+    # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660  # noqa
+    
+    return loss
+    
 
 def _expand_onehot_labels(labels, label_weights, target_shape, ignore_index):
     """Expand onehot labels to match the size of prediction."""
@@ -199,6 +229,7 @@ def mask_cross_entropy(pred,
     Returns:
         torch.Tensor: The calculated loss
     """
+    # pdb.set_trace()
     assert ignore_index is None, 'BCE loss does not support ignore_index'
     # TODO: handle these two reserved arguments
     assert reduction == 'mean' and avg_factor is None
@@ -270,12 +301,14 @@ class CrossEntropyLoss(nn.Module):
                  loss_weight=1.0,
                  loss_name='loss_ce',
                  wsss=False,
+                 depth=False,
                  avg_non_ignore=False):
         super().__init__()
         assert (use_sigmoid is False) or (use_mask is False)
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
         self.wsss = wsss
+        self.depth = depth
         self.reduction = reduction
         self.loss_weight = loss_weight
         self.class_weight = get_class_weight(class_weight)
@@ -293,6 +326,8 @@ class CrossEntropyLoss(nn.Module):
             self.cls_criterion = mask_cross_entropy
         elif self.wsss:
             self.cls_criterion = wsss_cross_entropy
+        elif self.depth:
+            self.cls_criterion = depth_cross_entropy
         else:
             self.cls_criterion = cross_entropy
         self._loss_name = loss_name

@@ -36,7 +36,7 @@ img_ratios = [
     1.75,
 ]
 launcher = 'none'
-load_from = 'work_dirs/wsss_voc12_res50_seed4depthloss/iter_20000.pth'
+load_from = 'work_dirs/wsss_voc12_res50_cls_seed/iter_10000.pth'
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
 
@@ -47,8 +47,9 @@ decode_head=dict(
         in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=0.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
-                        dict(loss_weight=1.0, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
+                        dict(loss_weight=0.5, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
+                        dict(loss_weight=0.5, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),
+                        ],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
@@ -58,7 +59,7 @@ decode_head=dict(
             1,#56*56->4096channels
         ),
         type='CAMHead')
-model = dict(data_preprocessor=data_preprocessor,pretrained='open-mmlab://resnet50_v1c',
+model = dict(data_preprocessor=data_preprocessor,#pretrained='open-mmlab://resnet50_v1c',
         backbone=dict(
         contract_dilation=True,
         depth=50,
@@ -91,7 +92,7 @@ model = dict(data_preprocessor=data_preprocessor,pretrained='open-mmlab://resnet
 
 # norm_cfg = dict(requires_grad=True, type='SyncBN')
 
-optimizer = dict(lr=0.0001, momentum=0.9, type='SGD', weight_decay=0.0005,)
+optimizer = dict(lr=0.0005, momentum=0.9, type='SGD', weight_decay=0.0005,)
 optim_wrapper = dict(
     clip_grad=None,
     optimizer=optimizer,
@@ -106,8 +107,8 @@ param_scheduler = [
     dict(
         begin=0,
         by_epoch=False,
-        end=20000,
-        eta_min=0.0001,
+        end=10000,
+        eta_min=0.0000001,
         power=0.9,
         type='PolyLR'),
 ]
@@ -134,7 +135,7 @@ test_pipeline = [
     dict(type='PackSegInputs'),
 ]
 
-train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
+train_cfg = dict(max_iters=10000, type='IterBasedTrainLoop', val_interval=500)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
@@ -157,7 +158,7 @@ train_pipeline = [
     dict(type='PackSegInputs'),
 ]
 train_dataloader = dict(
-    batch_size=8,
+    batch_size=16,
     dataset=dict(
         ann_file='ImageSets/Segmentation/aug.txt',
         data_prefix=dict(

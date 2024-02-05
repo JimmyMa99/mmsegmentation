@@ -173,7 +173,6 @@ class EncoderDecoder(BaseSegmentor):
         """
 
         x = self.extract_feat(inputs)
-        pdb.set_trace()
         losses = dict()
         loss_decode = self._decode_head_forward_train(x, data_samples)
         losses.update(loss_decode)

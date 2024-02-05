@@ -14,11 +14,11 @@ from .utils import reduce_loss, weight_reduce_loss, weighted_loss
 
 from .eps_loss import EPSLoss
 from .depth_loss import DepthLoss
-
+from .depth_loss2 import DepthLoss2
 __all__ = [
     'accuracy', 'Accuracy', 'cross_entropy', 'binary_cross_entropy',
     'mask_cross_entropy', 'CrossEntropyLoss', 'reduce_loss',
     'weight_reduce_loss', 'weighted_loss', 'LovaszLoss', 'DiceLoss',
     'FocalLoss', 'TverskyLoss', 'OhemCrossEntropy', 'BoundaryLoss',
-    'HuasdorffDisstanceLoss', 'SiLogLoss','EPSLoss','DepthLoss'
+    'HuasdorffDisstanceLoss', 'SiLogLoss','EPSLoss','DepthLoss','DepthLoss2'
 ]

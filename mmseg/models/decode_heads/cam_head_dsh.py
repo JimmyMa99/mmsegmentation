@@ -19,7 +19,7 @@ from typing import List, Tuple
 from mmengine.model import BaseModule
 
 @MODELS.register_module()
-class CAMHead(BaseDecodeHead_wsss):
+class DSHHead(BaseDecodeHead_wsss):
     """Pyramid Scene Parsing Network.
 
     This head is the implementation of
@@ -35,6 +35,7 @@ class CAMHead(BaseDecodeHead_wsss):
         assert isinstance(pool_scales, (list, tuple))
         # pdb.set_trace()
         # self.fc8=torch.nn.Conv2d(4096, self.num_classes, 1, bias=False)
+        self.conv_seg=torch.nn.Conv2d(2048, 1, 1, bias=False)
         torch.nn.init.xavier_uniform_(self.conv_seg.weight)
 
     def _forward_feature(self, inputs):
@@ -49,7 +50,7 @@ class CAMHead(BaseDecodeHead_wsss):
                 H, W) which is feature map for last layer of decoder head.
         """
         # x = self._transform_inputs(inputs)
-        #pdb.set_trace()
+        # pdb.set_trace()
         if isinstance(inputs, list):
             x = inputs[-1]#取最后一层4096
         else:
@@ -61,6 +62,7 @@ class CAMHead(BaseDecodeHead_wsss):
 
     def forward(self, inputs):
         """Forward function."""
+        # pdb.set_trace()
         output = self._forward_feature(inputs)
         #get output from feature map
         # n,c,h,w=feats.size()

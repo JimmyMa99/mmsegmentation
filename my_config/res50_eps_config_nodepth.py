@@ -39,24 +39,7 @@ launcher = 'none'
 load_from = None
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
-auxiliary_head=dict(
-        align_corners=False,
-        channels=2048,
-        # dropout_ratio=0.1,
-        in_channels=2048,
-        in_index=3,
-        loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=False,depth=True),
-                        # dict(loss_weight=0.5, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),
-                        ],
-        # norm_cfg=dict(requires_grad=True, type='SyncBN'),
-        num_classes=21,
-        pool_scales=(
-            1,
-            2,
-            3,
-            1,#56*56->4096channels
-        ),
-        type='DSHHead')
+
 decode_head=dict(
         align_corners=False,
         channels=2048,
@@ -65,7 +48,6 @@ decode_head=dict(
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
                         dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
-                        # dict(loss_weight=0.5, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),
                         ],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
@@ -104,13 +86,12 @@ model = dict(data_preprocessor=data_preprocessor,pretrained='open-mmlab://resnet
         style='pytorch',
         type='ResNetV1c'),
         decode_head=decode_head,
-        auxiliary_head=auxiliary_head,
         test_cfg=dict(mode='whole'),
     type='WSSSEncoderDecoder')
 
 # norm_cfg = dict(requires_grad=True, type='SyncBN')
 
-optimizer = dict(lr=0.001, momentum=0.9, type='SGD', weight_decay=0.0005,)
+optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005,)
 optim_wrapper = dict(
     clip_grad=None,
     optimizer=optimizer,
@@ -118,7 +99,6 @@ optim_wrapper = dict(
     paramwise_cfg = dict(
     custom_keys={
     'decode_head.conv_seg': dict(lr_mult=10.),
-    'auxiliary_head.conv_seg': dict(lr_mult=10.),
     }))
 
 #lr衰减
@@ -127,7 +107,7 @@ param_scheduler = [
         begin=0,
         by_epoch=False,
         end=20000,
-        eta_min=0.0000001,
+        eta_min=0.0001,
         power=0.9,
         type='PolyLR'),
 ]
@@ -247,4 +227,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res50_depthhead'
+work_dir = 'work_dirs/wsss_voc12_res50_nodepthloss'

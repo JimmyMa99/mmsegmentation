@@ -36,7 +36,7 @@ img_ratios = [
     1.75,
 ]
 launcher = 'none'
-load_from = 'work_dirs/wsss_voc12_res50_seed4depthloss/iter_20000.pth'
+load_from = None
 log_level = 'INFO'
 log_processor = dict(by_epoch=False)
 
@@ -47,8 +47,8 @@ decode_head=dict(
         in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=0.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
-                        dict(loss_weight=1.0, type='DepthLoss', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
+                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
+                        dict(loss_weight=1.0, type='DepthLoss2', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
@@ -227,4 +227,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res50_depthloss'
+work_dir = 'work_dirs/wsss_voc12_res50_compute_gradient_consistency_loss'
