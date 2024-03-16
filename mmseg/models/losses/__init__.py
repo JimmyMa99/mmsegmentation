@@ -17,6 +17,7 @@ from .depth_loss import DepthLoss
 from .depth_loss2 import DepthLoss2
 
 from .siamese_cross_entropy_loss import SiameseCrossEntropyLoss
+from .spCE_loss import SuperpixelCrossEntropyLoss
 
 # from .depth_loss2 import DepthFrequencyLoss
 __all__ = [
@@ -24,6 +25,6 @@ __all__ = [
     'mask_cross_entropy', 'CrossEntropyLoss', 'reduce_loss',
     'weight_reduce_loss', 'weighted_loss', 'LovaszLoss', 'DiceLoss',
     'FocalLoss', 'TverskyLoss', 'OhemCrossEntropy', 'BoundaryLoss',
-    'HuasdorffDisstanceLoss', 'SiLogLoss','EPSLoss','DepthLoss','DepthLoss2','SiameseCrossEntropyLoss'
+    'HuasdorffDisstanceLoss', 'SiLogLoss','EPSLoss','DepthLoss','DepthLoss2','SiameseCrossEntropyLoss','SuperpixelCrossEntropyLoss',
 #'DepthFrequencyLoss',
 ]

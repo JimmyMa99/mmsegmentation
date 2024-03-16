@@ -189,17 +189,25 @@ class SiameseEncoderDecoder(BaseSegmentor):
         x_siamese_inputs = self.extract_feat(siamese_inputs)
         # siamese_o = self.decode_head.forward(x)
         # x = self.extract_feat(inputs)
+        # data_samples_list=[]
+        # patch_size=siamese_inputs.shape[0]//len(data_samples)
+        # for i ,data_sample in enumerate(data_samples):
+        #     data_sample.set_metainfo({'crop_imgs': siamese_inputs[i:patch_size*(i+1)]})
+        #     data_samples_list.append(data_sample)
+
+        # data_samples = data_samples_list
+        data_samples[0].set_metainfo({'crop_imgs': siamese_inputs})
         x = dict(inputsx=x_inputs,siamesex=x_siamese_inputs)
         # pdb.set_trace()
         losses = dict()
         #siamese_loss_calculation
 
         loss_decode_inputs,data_samples = self._decode_head_forward_train(x['inputsx'], data_samples,siamese=False)
-        loss_decode = self._decode_head_forward_train(x['siamesex'], data_samples,siamese=True)#total_loss
+        loss_decode,data_samples = self._decode_head_forward_train(x['siamesex'], data_samples,siamese=True)#total_loss
+        # pdb.set_trace()
 
 
-
-        losses.update(loss_decode[0])
+        losses.update(loss_decode)
     
         if self.with_auxiliary_head:
             loss_aux = self._auxiliary_head_forward_train(x, data_samples)

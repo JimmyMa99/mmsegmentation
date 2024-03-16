@@ -1,10 +1,12 @@
+import sys
+# sys.path.append('/media/ders/mazhiming/mmseg4wsss/mmsegmentation/tools/general')
 import core.models as fcnmodel
-from tools.ai.torch_utils import *
-from tools.general.Q_util import *
+from .ai_.torch_utils import *
+from .general.Q_util import *
 from torch import nn
 
 from torchvision import transforms
-from tools.ai.augment_utils import Normalize_For_inference, Transpose_For_Segmentation
+from .ai_.augment_utils import Normalize_For_inference, Transpose_For_Segmentation
 
 import torch.nn.functional as F
 
@@ -23,7 +25,7 @@ class ASAMrefiner():
                 Transpose_For_Segmentation()
             ])
         self.transform = transform
-        self.down_size=16
+        self.down_size=8
     
     def calc_affmatmask(self,psam):
 
@@ -31,14 +33,14 @@ class ASAMrefiner():
 
     def get_affmats_cammask(self,img): #size of img is equal to cam
         Qs = self.Q_model(img)
-        affmats = calc_affmat(Qs)
+        affmats = calc_affmat(Qs,self.down_size)
         return affmats
 
 
     def get_affmats(self,img): #size of img is not equal to cam
-        img = F.interpolate(img, size=(img.shape[2]//16*16,img.shape[3]//16*16), mode='bilinear', align_corners=False)
+        img = F.interpolate(img, size=(img.shape[2]//8*8,img.shape[3]//8*8), mode='bilinear', align_corners=False)
         Qs = self.Q_model(img)
-        affmats = calc_affmat(Qs)
+        affmats = calc_affmat(Qs,self.down_size)
         return affmats
 
     def refine(self,cam,affmats,renum):
@@ -66,7 +68,7 @@ class ASAMrefiner():
         tensor_cam = torch.from_numpy(cam).float().cuda().unsqueeze(0)
         if h==H and w==W:
             #affmats = self.get_affmats_cammask(inputs)
-            cam = F.interpolate(tensor_cam, size=(h//16,w//16), mode='bilinear', align_corners=False)
+            cam = F.interpolate(tensor_cam, size=(h//8,w//8), mode='bilinear', align_corners=False)
         affmats = self.get_affmats(inputs)
         cam = self.refine(cam,affmats,renum)
         cam = F.interpolate(cam, size=(H,W), mode='bilinear', align_corners=False)
@@ -79,9 +81,9 @@ class ASAMrefiner():
         b,c,H,W=inputs.shape
         b,c,h,w=cam.shape
         tensor_cam = cam
-        if h!=H//16 and w!=W//16:
+        if h!=H//8 and w!=W//8:
             #affmats = self.get_affmats_cammask(inputs)
-            cam = F.interpolate(tensor_cam, size=(H//16,W//16), mode='bilinear', align_corners=False)
+            cam = F.interpolate(tensor_cam, size=(H//8,W//8), mode='bilinear', align_corners=False)
         affmats = self.get_affmats(inputs)
         cam = self.refine(cam,affmats,renum)
         cam = F.interpolate(cam, size=(h,w), mode='bilinear', align_corners=False)

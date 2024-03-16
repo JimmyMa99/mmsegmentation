@@ -207,6 +207,9 @@ class L2GSegDataPreProcessor(BaseDataPreprocessor):
         rgb_to_bgr: bool = False,
         batch_augments: Optional[List[dict]] = None,
         test_cfg: dict = None,
+        crop_size = 224,
+        input_size = 448,
+        patch_size = 5
     ):
         super().__init__()
         self.size = size
@@ -214,7 +217,7 @@ class L2GSegDataPreProcessor(BaseDataPreprocessor):
         self.pad_val = pad_val
         self.seg_pad_val = seg_pad_val
         self.siamese = True
-        self.get_siamese_inputs = Local_Image_Crop(224,448,5)
+        self.get_siamese_inputs = Local_Image_Crop(crop_size,input_size,patch_size)
 
         assert not (bgr_to_rgb and rgb_to_bgr), (
             '`bgr2rgb` and `rgb2bgr` cannot be set to True at the same time')

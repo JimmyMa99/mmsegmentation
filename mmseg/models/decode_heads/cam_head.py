@@ -147,7 +147,7 @@ class CAMHead(BaseDecodeHead_wsss):
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logits,
-                    [seg_label,sal_map,cam],#,depth_map],
+                    [seg_label,sal_map,cam,batch_data_samples],#,depth_map],
                     weight=seg_weight,
                     ignore_index=self.ignore_index,siamese=siamese)
             else:

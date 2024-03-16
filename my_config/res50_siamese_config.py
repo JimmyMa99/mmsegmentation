@@ -1,7 +1,9 @@
-crop_size = (
-    448,
-    448,
-)
+patch_size = 5
+crop_size = 224
+input_size = 448
+batch_size = 8
+total_patch = patch_size*batch_size
+
 data_preprocessor = dict(
     bgr_to_rgb=True,
     mean=[
@@ -20,6 +22,9 @@ data_preprocessor = dict(
         57.12,
         57.375,
     ],
+    crop_size = crop_size,
+    input_size = input_size,
+    patch_size = patch_size,
     type='L2GSegDataPreProcessor')
 dataset_type = 'PascalVOCDataset'
 default_scope = 'mmseg'
@@ -47,7 +52,9 @@ decode_head=dict(
         in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='SiameseCrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
+                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
+                        dict(loss_weight=1.0, type='SuperpixelCrossEntropyLoss', superpixel=True,ws_thr=0.8,weight_sp=0.5,renum=5,total_patch=total_patch),
+                        ],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
@@ -156,7 +163,7 @@ train_pipeline = [
     dict(type='PackSegInputs'),
 ]
 train_dataloader = dict(
-    batch_size=8,
+    batch_size=batch_size,
     dataset=dict(
         ann_file='ImageSets/Segmentation/aug.txt',
         data_prefix=dict(
