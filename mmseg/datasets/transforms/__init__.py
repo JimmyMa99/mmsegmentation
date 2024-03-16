@@ -13,7 +13,7 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          RandomDepthMix, RandomFlip, RandomMosaic,
                          RandomRotate, RandomRotFlip, Rerange, Resize,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         SegRescale,GetLocalInput)
 
 # yapf: enable
 __all__ = [
@@ -26,5 +26,5 @@ __all__ = [
     'BioMedical3DRandomFlip', 'BioMedicalRandomGamma', 'BioMedical3DPad',
     'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
     'LoadMultipleRSImageFromFile', 'LoadDepthAnnotation', 'RandomDepthMix',
-    'RandomFlip', 'Resize', 'LoadAnnotations_SAL'
+    'RandomFlip', 'Resize', 'LoadAnnotations_SAL','GetLocalInput'
 ]

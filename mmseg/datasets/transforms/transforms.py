@@ -2596,3 +2596,140 @@ class RandomDepthMix(BaseTransform):
 
         results['img'] = img
         return results
+    
+import torch
+@TRANSFORMS.register_module()
+class GetLocalInput(BaseTransform):
+    """Random crop the image & seg.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - gt_seg_map
+
+
+    Args:
+        crop_size (Union[int, Tuple[int, int]]):  Expected size after cropping
+            with the format of (h, w). If set to an integer, then cropping
+            width and height are equal to this integer.
+        cat_max_ratio (float): The maximum ratio that single category could
+            occupy.
+        ignore_index (int): The label index to be ignored. Default: 255
+    """
+
+    def __init__(self,
+                 crop_size: int = 224,
+                 cat_max_ratio: float = 1.,
+                    patch_size: int = 4,
+                    input_size: int = 512,
+                 ignore_index: int = 255):
+        super().__init__()
+        # assert isinstance(crop_size, int) or (
+        #     isinstance(crop_size, tuple) and len(crop_size) == 2
+        # ), 'The expected crop_size is an integer, or a tuple containing two '
+        # 'intergers'
+
+        # if isinstance(crop_size, int):
+        #     crop_size = (crop_size, crop_size)
+        # assert crop_size[0] > 0 and crop_size[1] > 0
+        self.crop_size = crop_size
+        self.cat_max_ratio = cat_max_ratio
+        self.ignore_index = ignore_index
+        self.patch_size = patch_size
+        self.input_size = input_size
+
+    @cache_randomness
+    def box_generation(self):
+        max_range = self.input_size - self.crop_size
+        assert(self.patch_size >= 4)
+        boxes = []
+        boxes = [torch.tensor([0, 0, 0, self.crop_size, self.crop_size])[None],
+                torch.tensor([0, 0, max_range, self.crop_size, max_range + self.crop_size])[None],
+                torch.tensor([0, max_range, 0, max_range + self.crop_size, self.crop_size])[None],
+                torch.tensor([0, max_range, max_range, max_range + self.crop_size, max_range + self.crop_size])[None]
+            ]
+        for i in range(self.patch_size - 4):
+            ind_h, ind_w = np.random.randint(0, max_range, size=2)
+            boxes.append(torch.tensor([0, ind_w, ind_h, ind_w + self.crop_size, ind_h + self.crop_size])[None])
+        boxes = torch.cat(boxes, dim=0)
+
+        return boxes  # K, 5
+
+    def crop(self, img: np.ndarray, crop_bbox: tuple) -> np.ndarray:
+        """Crop from ``img``
+
+        Args:
+            img (np.ndarray): Original input image.
+            crop_bbox (tuple): Coordinates of the cropped image.
+
+        Returns:
+            np.ndarray: The cropped image.
+        """
+
+        crop_y1, crop_y2, crop_x1, crop_x2 = crop_bbox
+        img = img[crop_y1:crop_y2, crop_x1:crop_x2, ...]
+        return img
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to randomly crop images, semantic segmentation
+        maps.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Randomly cropped results, 'img_shape' key in result dict is
+                updated according to crop size.
+        """
+        
+        image = results['img']
+        image=torch.tensor(image).transpose(0,2).transpose(1,2)
+        assert image.dim() == 3
+        
+        
+        boxes = self.box_generation()
+        # assert boxes.shape == (5,5)
+        crop_images = []
+        # crop_bbox = self.crop_bbox(results)
+        for i in range(len(boxes)):
+            box = boxes[i][1:]
+            crop_images.append(image[:, box[1]:box[3], box[0]:box[2]].clone()[None])
+            assert crop_images[i].shape == crop_images[-1].shape
+            # crop_sals.append(sal[:, box[1]:box[3], box[0]:box[2]].clone()[None])
+
+        crop_images = torch.stack(crop_images, dim=0)
+        assert crop_images.dim() == 4
+
+
+
+        # crop the image
+        # img = self.crop(img, crop_bbox)
+
+        # crop semantic seg & sal map
+        # for key in results.get('seg_fields', []):
+        #     results[key] = self.crop(results[key], crop_bbox)
+
+        
+        # #for sal map
+        # if 'sal_fields' in results:
+        #     for key in results.get('sal_fields', []):
+        #         results[key] = self.crop(results[key], crop_bbox)
+        
+        # image=image.squeeze(0)
+        # crop_images=crop_images.squeeze(0)
+        img=image.transpose(0,1).transpose(0,2).numpy()
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['local_img'] = crop_images.numpy()
+        results['local_img_shape'] = crop_images.numpy().shape[1:]
+        results['local_boxes'] = boxes
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__ + f'(crop_size={self.crop_size})'

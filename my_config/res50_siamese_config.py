@@ -20,7 +20,7 @@ data_preprocessor = dict(
         57.12,
         57.375,
     ],
-    type='SegDataPreProcessor')
+    type='L2GSegDataPreProcessor')
 dataset_type = 'PascalVOCDataset'
 default_scope = 'mmseg'
 env_cfg = dict(
@@ -46,9 +46,8 @@ decode_head=dict(
         # dropout_ratio=0.1,
         in_channels=2048,
         in_index=3,
-        loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=0.5, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
-                        dict(loss_weight=1.5, type='DepthLoss2', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
+        loss_decode=[dict(loss_weight=1.0, type='SiameseCrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
+                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(
@@ -87,7 +86,7 @@ model = dict(data_preprocessor=data_preprocessor,pretrained='open-mmlab://resnet
         type='ResNetV1c'),
         decode_head=decode_head,
         test_cfg=dict(mode='whole'),
-    type='WSSSEncoderDecoder')
+    type='SiameseEncoderDecoder')
 
 # norm_cfg = dict(requires_grad=True, type='SyncBN')
 
@@ -138,7 +137,6 @@ train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
-    dict(type='LoadDepthAnnotation'),
     dict(
         keep_ratio=True,
         ratio_range=(0.9,1.1),
@@ -153,6 +151,7 @@ train_pipeline = [
         448,
         448,
     ), type='RandomCrop'),
+    # dict(type='GetLocalInput',crop_size=224,input_size=448,patch_size=5),
     # dict(type='Pad', size=crop_size),
     dict(type='PackSegInputs'),
 ]
@@ -161,11 +160,11 @@ train_dataloader = dict(
     dataset=dict(
         ann_file='ImageSets/Segmentation/aug.txt',
         data_prefix=dict(
-            img_path='JPEGImages', seg_map_path='SegmentationClassAug',sal_path='saliency_map',depth_map_path='depth_maps'),
+            img_path='JPEGImages', seg_map_path='SegmentationClassAug_true',sal_path='saliency_map'),
         data_root='data/VOCdevkit/VOC2012',
         pipeline=train_pipeline,
         type='PascalVOCDataset_Sal'),
-    num_workers=8,
+    num_workers=1,
     persistent_workers=True,
     sampler=dict(shuffle=True, type='InfiniteSampler'))
 
@@ -200,7 +199,7 @@ val_dataloader = dict(
     dataset=dict(
         ann_file='ImageSets/Segmentation/train.txt',
         data_prefix=dict(
-            img_path='JPEGImages', seg_map_path='SegmentationClass'),
+            img_path='JPEGImages', seg_map_path='SegmentationClassAug_true'),
         data_root='data/VOCdevkit/VOC2012',
         pipeline=test_pipeline,
         type='PascalVOCDataset',),
@@ -227,4 +226,4 @@ default_hooks = dict(
     visualization=dict(type='SegVisualizationHook', draw=True, interval=100))
 ################################################
 
-work_dir = 'work_dirs/wsss_voc12_res50_compute_gradient_consistency_loss'
+work_dir = 'work_dirs/wsss_voc12_res50_siamese'

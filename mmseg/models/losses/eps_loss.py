@@ -304,36 +304,39 @@ def eps_wsss_loss(pred,
                     class_weight=None,
                     ignore_index=-100,
                     avg_non_ignore=False,
+                    siamese=False,
                     **kwargs):
     """
     Calculate the binary CrossEntropy loss.
     """
     #
-    label=target[0]
-    sal=target[1]
-    # pdb.set_trace()
-    # sal=torch.mean(sal,dim=1,keepdim=True)
-    pred_=target[2]
-    # b,c,h,w=pred.size()
-    # pdb.set_trace()
-    label, weight, valid_mask = _expand_onehot_labels(
-            label, weight, pred.shape, ignore_index)
-    # pdb.set_trace()
-    # b,c,h,w=pred_.size()
-    # pred_ = F.avg_pool2d(pred_, kernel_size=(h, w), padding=0)
-    
-    b,c,h,w=pred.size()
-    label = torch.sum(label.view(b, c, -1),dim=-1)
-    label[label>0]=1.
-    label=label.float()
-    # label = label.unsqueeze(-1).unsqueeze(-1)
-    # pdb.set_trace()
-    # pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
-    eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
-                        0.4, 0.5, intermediate=False)
+    if not siamese:
+        label=target[0]
+        sal=target[1]
+        # pdb.set_trace()
+        # sal=torch.mean(sal,dim=1,keepdim=True)
+        pred_=target[2]
+        # b,c,h,w=pred.size()
+        # pdb.set_trace()
+        label, weight, valid_mask = _expand_onehot_labels(
+                label, weight, pred.shape, ignore_index)
+        # pdb.set_trace()
+        # b,c,h,w=pred_.size()
+        # pred_ = F.avg_pool2d(pred_, kernel_size=(h, w), padding=0)
+        
+        b,c,h,w=pred.size()
+        label = torch.sum(label.view(b, c, -1),dim=-1)
+        label[label>0]=1.
+        label=label.float()
+        # label = label.unsqueeze(-1).unsqueeze(-1)
+        # pdb.set_trace()
+        # pred_=torch.roll(target[-1], shifts=-1, dims=1)#[bg,classes ch,..] [bs,c,h,w]
+        eps_loss =  eps_lossfn(pred_, sal, c-1, label[:,1:],
+                            0.4, 0.5, intermediate=False)
     
     # pred=torch.roll(pred, shifts=-1, dims=0)
-
+    else:
+        eps_loss=torch.tensor(0.0).cuda()
 
 
 
@@ -412,6 +415,7 @@ class EPSLoss(nn.Module):
                 avg_factor=None,
                 reduction_override=None,
                 ignore_index=-100,
+                siamese=False,
                 **kwargs):
         """Forward function."""
         assert reduction_override in (None, 'none', 'mean', 'sum')
@@ -431,6 +435,7 @@ class EPSLoss(nn.Module):
             avg_factor=avg_factor,
             avg_non_ignore=self.avg_non_ignore,
             ignore_index=ignore_index,
+            siamese=siamese,
             **kwargs)
         return loss_cls
 

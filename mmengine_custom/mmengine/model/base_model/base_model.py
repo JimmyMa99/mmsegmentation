@@ -342,6 +342,7 @@ class BaseModel(BaseModule):
         Returns:
             dict or list: Results of training or testing mode.
         """
+        
         if isinstance(data, dict):
             results = self(**data, mode=mode)
         elif isinstance(data, (list, tuple)):

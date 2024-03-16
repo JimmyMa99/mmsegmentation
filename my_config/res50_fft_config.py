@@ -47,8 +47,8 @@ decode_head=dict(
         in_channels=2048,
         in_index=3,
         loss_decode=[dict(loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False,use_mask=False,wsss=True),
-                        dict(loss_weight=0.5, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
-                        dict(loss_weight=1.5, type='DepthLoss2', use_sigmoid=False,use_mask=False,eps_wsss=False,depth=True),],
+                        dict(loss_weight=1.0, type='EPSLoss', use_sigmoid=False,use_mask=False,eps_wsss=True),
+                        dict(loss_weight=1.0, type='DepthLoss2', use_sigmoid=False,use_mask=False),],
         # norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=21,
         pool_scales=(

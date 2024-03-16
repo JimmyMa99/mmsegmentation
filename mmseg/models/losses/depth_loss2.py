@@ -30,7 +30,7 @@ def eps_lossfn(cam, saliency, num_classes, label, tau, lam, intermediate=True):
     """
     
     b, c, h, w = cam.size()
-    # pdb.set_trace()
+    pdb.set_trace()
     saliency = F.interpolate(saliency, size=(h, w))
 
     label_map = label.view(b, num_classes, 1, 1).expand(size=(b, num_classes, h, w)).bool()
@@ -453,13 +453,16 @@ def compute_gradient_consistency_loss(pred,
                     **kwargs):
     label=target[0]
     sal=target[1]
-    # pdb.set_trace()
-    # sal=torch.mean(sal,dim=1,keepdim=True)
     cam=target[2]
     depth_maps=target[3]
     depth_maps = depth_maps.unsqueeze(1) if len(depth_maps.shape) == 3 else depth_maps
+
+    depthloss1=depth_loss(pred, target, weight, reduction, avg_factor, class_weight, ignore_index, avg_non_ignore, alpha, **kwargs)
     batch_size, _, H, W = cam.shape
-    depth_maps = F.interpolate(depth_maps, size=(H, W), mode='bilinear', align_corners=False)
+    depth_maps = F.interpolate(depth_maps, size=(H, W), mode='bilinear', align_corners=True)
+    # b,c,h,w=depth_maps.size()
+    # cam=F.interpolate(cam,size=(h,w))
+    # cam=F.softmax(cam,dim=1)
     depth_map_processed = preprocess_depth_map(depth_maps, ignore_value=255)
     
     # Compute the gradient of CAM for each channel
@@ -480,11 +483,14 @@ def compute_gradient_consistency_loss(pred,
     depth_gradient = (depth_gradient - depth_gradient.min()) / (depth_gradient.max() - depth_gradient.min())
     
     # Compute gradient consistency loss separately for foreground and background
-    loss_foreground = F.mse_loss(pseudo_depth_map_foreground, depth_gradient)
-    loss_background = F.mse_loss(pseudo_depth_map_background, depth_gradient)
+    edge_weight = 0.8# Define or calculate an edge weight based on depth_gradient or other criteria
+    loss = edge_weight * F.mse_loss(pseudo_depth_map_foreground, depth_gradient) + \
+        (1 - edge_weight) * F.mse_loss(pseudo_depth_map_background, depth_gradient)
+
+
     
     # Combine foreground and background losses
-    loss = loss_foreground + loss_background
+    # loss = loss_foreground + loss_background
     return loss
 ############GPT4设计的loss#####################
 
@@ -713,3 +719,6 @@ class DepthLoss2(nn.Module):
             str: The name of this loss item.
         """
         return self._loss_name
+
+
+ 

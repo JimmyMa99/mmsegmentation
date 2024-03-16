@@ -272,12 +272,12 @@ def wsss_cross_entropy(pred,
         pred_cam = pred_cam.view(pred_cam.size(0), -1)
         loss=F.multilabel_soft_margin_loss(pred_cam[:,:-1], label[:,1:])
     else:
-        loss=torch.tensor(0.0)
+        loss=torch.tensor(0.0).cuda()
     return loss
 
 
 @MODELS.register_module()
-class CrossEntropyLoss(nn.Module):
+class SiameseCrossEntropyLoss(nn.Module):
     """CrossEntropyLoss.
 
     Args:
@@ -349,6 +349,7 @@ class CrossEntropyLoss(nn.Module):
                 avg_factor=None,
                 reduction_override=None,
                 ignore_index=-100,
+                siamese=False,
                 **kwargs):
         """Forward function."""
         assert reduction_override in (None, 'none', 'mean', 'sum')
@@ -368,6 +369,7 @@ class CrossEntropyLoss(nn.Module):
             avg_factor=avg_factor,
             avg_non_ignore=self.avg_non_ignore,
             ignore_index=ignore_index,
+            siamese=siamese,
             **kwargs)
         return loss_cls
 

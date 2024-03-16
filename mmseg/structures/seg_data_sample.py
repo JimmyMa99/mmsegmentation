@@ -58,6 +58,7 @@ class SegDataSample(BaseDataElement):
     @property
     def gt_sem_seg(self) -> PixelData:
         return self._gt_sem_seg
+    
 
     @gt_sem_seg.setter
     def gt_sem_seg(self, value: PixelData) -> None:
