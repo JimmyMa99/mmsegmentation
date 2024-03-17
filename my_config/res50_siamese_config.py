@@ -1,4 +1,4 @@
-patch_size = 5
+patch_size = 4
 crop_size = 224
 input_size = 448
 batch_size = 8
@@ -112,7 +112,7 @@ param_scheduler = [
     dict(
         begin=0,
         by_epoch=False,
-        end=20000,
+        end=40000,
         eta_min=0.0001,
         power=0.9,
         type='PolyLR'),
@@ -140,7 +140,7 @@ test_pipeline = [
     dict(type='PackSegInputs'),
 ]
 
-train_cfg = dict(max_iters=20000, type='IterBasedTrainLoop', val_interval=500)
+train_cfg = dict(max_iters=40000, type='IterBasedTrainLoop', val_interval=2000)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations_SAL'),
